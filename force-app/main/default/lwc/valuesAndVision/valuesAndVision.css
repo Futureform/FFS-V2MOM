@@ -1,0 +1,87 @@
+.slds-button__icon {
+    width: 1.5em !important;
+    height: 1.5em !important;
+}
+
+.collapsible {
+    color: black;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+
+.active, .collapsible:hover {
+    background-color: lightgray;
+}
+
+.content {
+    display: none;
+    overflow: hidden;
+    background-color: #f1f1f1;
+}
+
+button {
+    border: none !important;
+    margin: 0.5em;
+    cursor: pointer;
+    padding: 0px !important;
+    width: -webkit-fill-available !important;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    background: transparent;
+    color: black;
+}
+
+.containerDiv {
+    border: 1px solid lightgrey;
+    margin-top: 18px;
+    margin-bottom: 18px;
+    padding: 10px;
+}
+
+.slds-card, .slds-card__body {
+    border: none !important;
+}
+
+.title {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.bg {
+    background: transparent;
+}
+
+.d1 {
+    margin-top: 2em;
+    margin-bottom: 2em;
+    background: white;
+}
+
+:host {
+    --sds-c-card-color-background: transparent;
+    --sds-c-card-border: none;
+    --sds-c-card-color-border: transparent;
+}
+
+img {
+    width: 3%;
+    height: auto;
+    margin-right: 1em;
+}
+
+.icons{
+    margin: 0.5em !important;
+    margin-right: 0em !important;
+}
+
+.value-class{
+    margin-top:2em;
+    box-shadow: 2px 3px lightgrey;
+    background:white !important;
+}

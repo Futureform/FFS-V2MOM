@@ -1,0 +1,99 @@
+<template>
+    <div data-id="flip" class="flip-card slds-card">
+        <article data-id="box" class="flip-card-inner" style={boxStyle}>
+            <div class="flip-card-front">
+                <div class="slds-card__header slds-grid" style="height:10%">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                        </div>
+                        <div class="slds-no-flex">
+                            <!--<lightning-icon icon-name="utility:down" alternative-text="Menu" size="x-small" title="Menu"></lightning-icon>-->
+                        </div>
+                    </header>
+                </div>
+                <div class="slds-card__body slds-card__body_inner" if:true={measure.data} style="height:90%">
+                    <lightning-layout vertical-align="center" multiple-rows style="height:100%">
+                        <lightning-layout-item flexibility="auto" size="12" padding="around-small" style="height:60%;">
+                            <div class="slds-align_absolute-center" align="center" style="height:100%;width:60%">
+                                <c-progress-ring percentage={quarterProgress} title=""> </c-progress-ring>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" style="height:20%;">
+                            <p class="slds-align_absolute-center slds-card__header-link slds-line-clamp_x-small measure-name"
+                                style={measureName}>{name}</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" style="height:5%;">
+                            <div class="slds-align_absolute-center"
+                                style="border-top: 1px solid #868686;width:85%;margin-top:3%;"></div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" style="height:15%;">
+                            <p class="slds-align_absolute-center" style={measureDate}>
+                                Last Updated On&nbsp;<lightning-formatted-date-time value={lastmodifiedby}>
+                                </lightning-formatted-date-time>
+                            </p>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+            </div>
+            <div class="flip-card-back slds-p-around_xx-small">
+                <div class="slds-card__header slds-grid" style="height:10%">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                        </div>
+                        <div class="slds-no-flex">
+                            <template if:false={isreadonlyUser}>
+                                <lightning-button-menu alternative-text="Menu" variant="bare" onselect={handleMenuSelect} menu-alignment="right" nubbin>
+                                    <lightning-menu-item value="edit" label="Edit" prefix-icon-name="utility:edit"></lightning-menu-item>
+                                    <lightning-menu-item value="comment" label="Comments" prefix-icon-name="utility:comments"></lightning-menu-item>
+                                </lightning-button-menu>
+                            </template>
+                        </div>
+                    </header>
+                </div>
+                <div class="slds-card__body slds-card__body_inner" if:true={measure.data} style="height:90%">
+                    <lightning-layout multiple-rows style="height:100%;overflow-y:auto;">
+                        <lightning-layout-item size="12">
+                            <p class="measure-name slds-align_absolute-center slds-card__header-link slds-line-clamp_x-small" style={measureName}>{name}</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item flexibility="auto" size="12" padding="around-small">
+                            <label class="slds-text-heading_small">Priority</label><br />
+                            <p>{priority}</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item flexibility="auto" size="6" padding="around-small">
+                            <label class="slds-text-heading_small">Current Value</label><br />
+                            <p>{currentvalue}</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item flexibility="auto" size="6" padding="around-small">
+                            <label class="slds-text-heading_small">Target Value</label><br />
+                            <p>{targetValue}</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item flexibility="auto" size="6" padding="around-small">
+                            <label class="slds-text-heading_small">Created On</label><br />
+                            <lightning-formatted-date-time value={createdDate} year="numeric" month="long" day="2-digit"></lightning-formatted-date-time>
+                        </lightning-layout-item>
+                        <lightning-layout-item flexibility="auto" size="6" padding="around-small">
+                            <label class="slds-text-heading_small">Completion Date</label><br />
+                            <lightning-formatted-date-time value={createdDate} year="numeric" month="long" day="2-digit"></lightning-formatted-date-time>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" padding="around-small">
+                            <label class="slds-text-heading_small">Obstacle</label>
+                            <p>{obstacles}</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" padding="around-small">
+                            <label class="slds-text-heading_small">Comments</label>
+                            <p>{comment}</p>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+            </div>
+        </article>
+    </div>
+    <template if:true={showEdit}>
+        <c-assigned-measure-edit measure-team-member-id={measureTeamMemberId} applicablequarter={quarter} onclosemodal={closeEditModal}></c-assigned-measure-edit>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <template if:true={showChat}>
+        <c-measure-comment onclosedock={closeChatDocker} measure-id={measureId} measure-name={name}>
+        </c-measure-comment>
+    </template>
+</template>

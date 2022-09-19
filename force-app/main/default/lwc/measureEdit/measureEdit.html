@@ -1,0 +1,344 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+        aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open flex">
+        <div class="slds-modal__container modalContainer">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"
+                    onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small">
+                    </lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{methodName} - {measureheader}
+                </h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_small" id="modal-content-id-1">
+                <!-- Edit Measure Block Start-->
+                <div>
+                    <lightning-layout horizontal-align="space" multiple-rows="true">
+
+                        <lightning-layout-item class="slds-p-around_small" size="5">
+                            <lightning-input name="name" label="Name" type="text" value={name} data-field="name"
+                                onchange={handleNameChange} required="true" max-length="80"></lightning-input>
+                            <c-field-length maximum-length="80" input-text={name} data-field="namesize">
+                            </c-field-length>
+                        </lightning-layout-item>
+                        <lightning-layout-item class="slds-p-around_small" size="7">
+                            <lightning-textarea name="comment" label="Comment" max-length="1000" value={comment}
+                                data-field="comment" onchange={handleCommentChange}></lightning-textarea>
+                            <c-field-length maximum-length="1000" input-text={comment} data-field="commentsize">
+                            </c-field-length>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item class="slds-p-around_small" size="12">
+                            
+                                <div class="slds-p-bottom_x-small">
+                                    <div class="slds-grid slds-gutters slds-p-top_x-small">           
+                                        <template if:true={quarter1}>
+                                            <div class="slds-col">
+                                                <lightning-input type="checkbox" label="Q1" name="input1" checked={applicableQ1} data-field="Q1" disabled={disableQ1}
+                                                onclick={onQuarterCheck}></lightning-input>
+                                            </div>
+                                        </template>
+                                        <template if:true={quarter2}>
+                                            <div class="slds-col">
+                                                <lightning-input type="checkbox" label="Q2" name="input1" checked={applicableQ2} data-field="Q2" disabled={disableQ2}
+                                                onclick={onQuarterCheck}></lightning-input>     
+                                            </div>
+                                        </template>
+                                        <template if:true={quarter3}>
+                                            <div class="slds-col">
+                                                <lightning-input type="checkbox" label="Q3" name="input1" checked={applicableQ3} data-field="Q3" disabled={disableQ3}
+                                                onclick={onQuarterCheck}></lightning-input>         
+                                            </div>
+                                        </template>
+                                        <template if:true={quarter4}>
+                                            <div class="slds-col">
+                                                <lightning-input type="checkbox" label="Q4" name="input1" checked={applicableQ4} data-field="Q4" disabled={disableQ4}
+                                                onclick={onQuarterCheck}></lightning-input>        
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            
+                        </lightning-layout-item>
+
+                        <!--<lightning-layout-item class="slds-p-around_small" size="5">
+                            <lightning-combobox data-field="completionquarter" name="Completion Quarter" label="Completion Quarter" value={currentQuarter} placeholder="" 
+                                options={quarterTypes} ></lightning-combobox>
+                        </lightning-layout-item>
+                        <lightning-layout-item class="slds-p-around_small" size="7">
+                            <lightning-input type="date" data-field="completiondate" name="input2" label="Completion Date" value={completionDate} onchange={validateData} required disabled={disableCompletionDate}></lightning-input>
+                        </lightning-layout-item>-->
+
+                    </lightning-layout>
+
+                    <lightning-layout horizontal-align="space" multiple-rows="true" class="slds-box"
+                        style="padding:unset;padding-bottom: 2%;">
+                        <lightning-layout-item class="slds-p-around_small" size="12">
+                            <legend class="slds-form-element__legend slds-form-element__label">
+                                <abbr class="slds-required" title="required">*</abbr>
+                                Track Progress By
+                            </legend>
+
+                            <lightning-layout class="slds-form-element__control">
+                                <lightning-layout-item size="7" class="slds-radio slds-p-horizontal_small">
+                                    <input type="radio" id="trackprogress2" value="Progress" name="trackprogress"
+                                        onclick={handleTrackProgressChange} checked={isProgressCompletion} />
+                                    <label class="slds-radio__label" for="trackprogress2">
+                                        <span class="slds-radio_faux"></span>
+                                        <span class="slds-form-element__label">Progress</span>
+                                    </label>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="5" class="slds-radio">
+                                    <input type="radio" id="trackprogress1" value="Completion" name="trackprogress"
+                                        onclick={handleTrackProgressChange} checked={isValuesCompletion} />
+                                    <label class="slds-radio__label" for="trackprogress1">
+                                        <span class="slds-radio_faux"></span>
+                                        <span class="slds-form-element__label">Completion</span>
+                                    </label>
+                                </lightning-layout-item>
+                                
+                            </lightning-layout>
+
+                        </lightning-layout-item>
+
+                        <lightning-layout-item class="slds-p-horizontal_small" size="5" if:true={isProgressCompletion}>
+                            <template if:true={measureStatusValues.data}>
+                                <lightning-combobox name="Status" label={statusLabel} value={status} placeholder=""
+                                    options={measureStatusValues.data.values} data-field="status"
+                                    onchange={validateData} required></lightning-combobox>
+                            </template>
+                        </lightning-layout-item>
+                        <lightning-layout-item class="slds-p-horizontal_small" size="7" if:true={isProgressCompletion}>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item size="8" if:true={isValuesCompletion}>
+                            <lightning-layout horizontal-align="spread" multiple-rows="true">
+
+                                <lightning-layout-item class="slds-p-horizontal_small" size=6>
+                                    <lightning-input data-field="targetvalue" type="number" label={targetLabel}
+                                        value={targetValue} onchange={validateData} required read-only={splitByQuarter}>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                                <lightning-layout-item class="slds-p-horizontal_small" size=6>
+                                    <lightning-input data-field="currentvalue" type="number" label={currentLabel}
+                                        value={currentValue} onchange={validateData} required
+                                        read-only={setCurrentValueReadOnly}>
+                                    </lightning-input>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item class="slds-p-around_small" size="6">
+                                    <c-Report-Lookup-Field object-name="Report" field-name="Name" label="Link to Report"
+                                        placeholder="Search Report" icon-name="standard:report" value={reportId}
+                                        onreportselected={handleReportSelected}></c-Report-Lookup-Field>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item class="slds-p-around_small" size="6">
+                                    <lightning-combobox name="summaryfield" label="Summary Field"
+                                        value={selectedReportField} placeholder="" options={reportFields}
+                                        data-field="summaryfield" onchange={setReportField}></lightning-combobox>
+                                    <lightning-button variant="base" label="Fetch Value From Report"
+                                        title="Fetch Value From Report" onclick={fetchValueFromReport}
+                                        disabled={disableReportValueButton}></lightning-button>
+                                </lightning-layout-item>
+
+                                <!--<lightning-layout-item class="slds-p-around_small" size="6">
+                                    <lightning-input type="toggle" data-field="editSplitByQuarter" label="SPLIT TARGET BY QUARTER" name="input1" checked={splitByQuarter} onchange={handleSplitEvent}></lightning-input>
+                                </lightning-layout-item>
+                                <lightning-layout-item class="slds-p-around_small" size="6">
+                                    <div class="slds-p-bottom_x-small">
+                                        <label>Applicable for</label>
+                                        <div class="slds-grid slds-gutters slds-p-top_x-small">
+                                            <div class="slds-col">
+                                                <lightning-input type="checkbox" label="Q1" name="input1" checked={Q1} data-field="Q1" onclick={validateText}></lightning-input>   
+                                            </div>
+                                            <div class="slds-col">
+                                                <lightning-input type="checkbox" label="Q2" name="input1" checked={Q2} data-field="Q2" onclick={validateText}></lightning-input>   
+                                            </div>
+                                            <div class="slds-col">
+                                                <lightning-input type="checkbox" label="Q3" name="input1" checked={Q3} data-field="Q3" onclick={validateText}></lightning-input>   
+                                            </div>
+                                            <div class="slds-col">
+                                                <lightning-input type="checkbox" label="Q4" name="input1" checked={Q4} data-field="Q4" onclick={validateText}></lightning-input>   
+                                            </div>
+                                        </div>
+                                    </div>
+                                </lightning-layout-item>-->
+
+                                <!--<lightning-layout-item class={tableClass} size="8">
+                                    <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-no-row-hover margin-auto">
+                                        <thead>
+                                            <tr class="slds-text-title_caps">
+                                                <th scope="col" style="width: 8%;">
+                                                    <div class="slds-truncate" title=""></div>
+                                                </th>
+                                                <th scope="col">
+                                                    <div class="slds-truncate" title="Target">Target</div>
+                                                </th>
+                                                <th scope="col" style="width: 45%;">
+                                                    <div class="slds-truncate" title="Current">Current</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="">
+                                                <td>Q1</td>
+                                                <td>
+                                                    <lightning-input data-field="Q1EditTarget" type="number" name="tQuarterValue" value={Q1TargetValue}
+                                                        label="" step="0.01" variant="label-hidden"  onchange={handleQuarterTotal} read-only={splitEditTarget}></lightning-input>
+                                                </td>
+                                                <td>
+                                                    <lightning-input data-field="Q1EditCurrent" class="" type="number" name="quarterValue"
+                                                        label="" value={Q1CurrentValue} step="0.01" onchange={handleQuarterTotal} variant="label-hidden" read-only={splitEditTarget}>
+                                                    </lightning-input>
+                                                </td>
+                                            </tr>
+                                            <tr class="">
+                                                <td>Q2</td>
+                                                <td>
+                                                    <lightning-input data-field="Q2EditTarget" type="number" name="tQuarterValue" value={Q2TargetValue}
+                                                        label="" step="0.01" variant="label-hidden" onchange={handleQuarterTotal} read-only={splitEditTarget}></lightning-input>
+                                                </td>
+                                                <td>
+                                                    <lightning-input data-field="Q2EditCurrent" class="" type="number" name="quarterValue"
+                                                        label="" value={Q2CurrentValue} step="0.01" onchange={handleQuarterTotal} variant="label-hidden" read-only={splitEditTarget}>
+                                                    </lightning-input>
+                                                </td>
+                                            </tr>
+                                            <tr class="">
+                                                <td>Q3</td>
+                                                <td>
+                                                    <lightning-input data-field="Q3EditTarget" type="number" name="tQuarterValue" value={Q3TargetValue}
+                                                        label="" step="0.01" variant="label-hidden" onchange={handleQuarterTotal} read-only={splitEditTarget}></lightning-input>
+                                                </td>
+                                                <td>
+                                                    <lightning-input data-field="Q3EditCurrent" class="" type="number" name="quarterValue"
+                                                        label="" value={Q3CurrentValue} step="0.01" onchange={handleQuarterTotal} variant="label-hidden" read-only={splitEditTarget}>
+                                                    </lightning-input>
+                                                </td>
+                                            </tr>
+                                            <tr class="">
+                                                <td>Q4</td>
+                                                <td>
+                                                    <lightning-input data-field="Q4EditTarget" type="number" name="tQuarterValue" value={Q4TargetValue}
+                                                        label="" step="0.01" variant="label-hidden" onchange={handleQuarterTotal} read-only={splitEditTarget}></lightning-input>
+                                                </td>
+                                                <td>
+                                                    <lightning-input data-field="Q4EditCurrent" class="" type="number" name="quarterValue"
+                                                        label="" value={Q4CurrentValue} step="0.01" onchange={handleQuarterTotal} variant="label-hidden" read-only={splitEditTarget}>
+                                                    </lightning-input>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="4">
+                                </lightning-layout-item>-->
+
+                            </lightning-layout>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="4" if:true={isProgressCompletion}>
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                    <lightning-layout horizontal-align="spread" multiple-rows="true">
+
+                        <lightning-layout-item class="slds-p-around_small" size="7">
+
+                            <legend class="slds-form-element__legend slds-form-element__label">
+                                <abbr class="slds-required" title="required">*</abbr>
+                                Priority
+                            </legend>
+
+                            <lightning-layout horizontal-align="spread" class="slds-form-element__control">
+                                <lightning-layout-item class="slds-radio">
+                                    <input id="priority1" type="radio" value="High" name="priority"
+                                        checked={highPriority} onchange={handlePriorityChange} />
+                                    <label class="slds-radio__label" for="priority1">
+                                        <span class="slds-radio_faux"></span>
+                                        <span class="slds-form-element__label">High</span>
+                                    </label>
+                                </lightning-layout-item>
+                                <lightning-layout-item class="slds-radio">
+                                    <input id="priority2" type="radio" value="Medium" name="priority"
+                                        checked={mediumPriority} onchange={handlePriorityChange} />
+                                    <label class="slds-radio__label" for="priority2">
+                                        <span class="slds-radio_faux"></span>
+                                        <span class="slds-form-element__label">Medium</span>
+                                    </label>
+                                </lightning-layout-item>
+                                <lightning-layout-item class="slds-radio">
+                                    <input id="priority3" type="radio" value="Low" name="priority" checked={lowPriority}
+                                        onchange={handlePriorityChange} />
+                                    <label class="slds-radio__label" for="priority3">
+                                        <span class="slds-radio_faux"></span>
+                                        <span class="slds-form-element__label">Low</span>
+                                    </label>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+                        <lightning-layout-item class="slds-p-around_small" size="5">
+                        </lightning-layout-item>
+
+
+                        <lightning-layout-item class="slds-p-around_small" size="12">
+                            <lightning-textarea name="obstacles" label="Obstacles" max-length="1000" value={obstacles}
+                                data-field="obstacles"></lightning-textarea>
+                            <c-field-length maximum-length="1000" input-text={obstacles} data-field="obstaclessize">
+                            </c-field-length>
+                        </lightning-layout-item>
+
+
+                       
+
+                        <!--<lightning-layout horizontal-align="spread" multiple-rows="true">
+
+                            <lightning-layout-item class="slds-p-horizontal_small" size="7">
+
+                                <legend class="slds-form-element__legend slds-form-element__label">
+                                    <abbr class="slds-required" title="required">*</abbr>
+                                    Applicable Quarter
+                                </legend>
+                            </lightning-layout-item>
+                            <lightning-layout-item class="slds-p-horizontal_small">
+                                <lightning-layout horizontal-align="spread">
+                                    <lightning-layout-item>
+                                        <lightning-input type="checkbox" label="Q1" name="input1" checked={Q1}
+                                            data-field="Q1" onclick={handleQuarterSelection}></lightning-input>
+
+                                    </lightning-layout-item>
+                                    <lightning-layout-item>
+                                        <lightning-input type="checkbox" label="Q2" name="input1" checked={Q2}
+                                            data-field="Q2" onclick={handleQuarterSelection}></lightning-input>
+
+                                    </lightning-layout-item>
+                                    <lightning-layout-item>
+                                        <lightning-input type="checkbox" label="Q3" name="input1" checked={Q3}
+                                            data-field="Q3" onclick={handleQuarterSelection}></lightning-input>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item>
+                                        <lightning-input type="checkbox" label="Q4" name="input1" checked={Q4}
+                                            data-field="Q4" onclick={handleQuarterSelection}></lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </lightning-layout-item>
+                        </lightning-layout>-->
+                    </lightning-layout>
+
+
+                </div>
+                <!-- Edit Measure End-->
+            </div>
+
+            <footer class="slds-modal__footer">
+                <lightning-button variant="base" onclick={refreshMethod} title="Refresh" label="Refresh"
+                    icon-name="utility:refresh" class="slds-m-left_x-small" if:false={addmeasure}></lightning-button>
+                <lightning-button variant="base" onclick={closeModal} title="Cancel" label="Cancel"
+                    icon-name="utility:close" class="slds-m-left_x-small"></lightning-button>
+                <lightning-button variant="base" onclick={updateOrcreateMeasure} title="Save" label="Save"
+                    icon-name="utility:save" class="slds-m-left_x-small" disabled={disableSave}></lightning-button>
+            </footer>
+        </div>
+    </section>
+</template>

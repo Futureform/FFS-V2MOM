@@ -1,0 +1,70 @@
+<template>
+    <div class="slds-docked_container" style="z-index:1;">
+        <section class="slds-docked-composer slds-grid slds-grid_vertical slds-is-open" role="dialog" aria-labelledby="dialog-heading-id-1" aria-describedby="dialog-content-id-1">
+            <header class="slds-docked-composer__header slds-grid slds-shrink-none" aria-live="assertive">
+                <div class="slds-media slds-media_center slds-no-space">
+                    <div class="slds-media__figure slds-m-right_x-small">
+                        <lightning-icon icon-name="utility:comments" alternative-text="chat" title="Chat"></lightning-icon>
+                    </div>
+                    <div class="slds-media__body">
+                        <h2 class="slds-truncate" id="dialog-heading-id-1" title={measureName}>{measureName}</h2>
+                    </div>
+                </div>
+                <div class="slds-col_bump-left slds-shrink-none">
+                    <lightning-button-icon icon-name="utility:close" variant="container" alternative-text="Close" title="Close" onclick={closeDocker}></lightning-button-icon>
+                </div>
+            </header>
+            <div class="slds-docked-composer__body slds-scrollable" style="height: 55%;" id="dialog-content-id-1" data-field="chatDiv">
+                <section role="log" class="slds-chat">
+                    <ul class="slds-chat-list">
+                        <template for:each={feedList.data} for:item="feed">
+                            <li class="slds-chat-listitem slds-chat-listitem_inbound slds-p-left_x-small" key={feed.sFeedId} if:false={feed.sIsLoggedInUser}>
+                                <div class="slds-chat-message">
+                                    <span>
+                                        <lightning-avatar variant="circle" src={feed.sSmallPhotoUrl} alternative-text={feed.sUserName} class="slds-m-right_xx-small"></lightning-avatar>
+                                    </span>
+                                    <div class="slds-chat-message__body">
+                                        <div class="slds-chat-message__text slds-chat-message__text_inbound">
+                                            <span>
+                                                <lightning-formatted-rich-text value={feed.sFeedRichText}></lightning-formatted-rich-text>
+                                            </span>
+                                            <div class="slds-chat-message__meta" style="font-style: italic;">{feed.sUserName} • <lightning-relative-date-time value={feed.lTimeStamp}></lightning-relative-date-time></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="slds-chat-listitem slds-chat-listitem_outbound" key={feed.sFeedId} if:true={feed.sIsLoggedInUser}>
+                                <div class="slds-chat-message">
+                                    <div class="slds-chat-message__body">
+                                        <div class="slds-chat-message__text slds-chat-message__text_outbound" data-msg-id={feed.sFeedId}>
+                                            <span>
+                                                <lightning-formatted-rich-text value={feed.sFeedRichText}></lightning-formatted-rich-text>
+                                            </span>
+                                            <div class="rightalign slds-chat-message__meta"><lightning-button-icon icon-name="utility:edit" alternative-text="edit" title="Edit" variant="bare-inverse" size="x-small" name={feed.sFeedId} onclick={editPost}></lightning-button-icon> • You • <lightning-relative-date-time value={feed.lTimeStamp}></lightning-relative-date-time></div>
+                                        </div>
+                                        <div class="slds-chat-message__text slds-chat-message__text_outbound hideDiv" data-edit-id={feed.sFeedId}>
+                                            <span>
+                                                <lightning-input-rich-text variant="bottom-toolbar" disabled-categories="INSERT_CONTENT,FORMAT_FONT,ALIGN_TEXT" style="width: 100%;" data-field={feed.sFeedId} value={feed.sFeedRichText}>
+                                                    <lightning-button-icon title="Save" icon-name="utility:save" slot="toolbar" class="slds-col_bump-left" name={feed.sFeedId} onclick={savePost}></lightning-button-icon>
+                                                    <lightning-button-icon title="Delete" icon-name="utility:delete" slot="toolbar" class="slds-col_bump-left" name={feed.sFeedId} onclick={deletePost}></lightning-button-icon>
+                                                </lightning-input-rich-text>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <span>
+                                        <lightning-avatar variant="circle" src={feed.sSmallPhotoUrl} alternative-text={feed.sUserName} class="slds-m-left_xx-small"></lightning-avatar>
+                                    </span>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </section>
+            </div>
+            <footer class="slds-docked-composer__footer slds-shrink-none slds-scrollable" style="height: 40%;">
+                <lightning-input-rich-text variant="bottom-toolbar" disabled-categories="INSERT_CONTENT,FORMAT_FONT,ALIGN_TEXT" style="width: 100%;height:50%" data-field="newpost">
+                    <lightning-button variant="brand" title="Send" icon-name="utility:send" slot="toolbar" label="Send" class="slds-col_bump-left" onclick={createPost}></lightning-button>
+                </lightning-input-rich-text>
+            </footer>
+        </section>
+    </div>
+</template>

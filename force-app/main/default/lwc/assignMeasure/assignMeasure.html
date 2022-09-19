@@ -1,0 +1,226 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+        aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open flex">
+        <div class="slds-modal__container modalContainer">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"
+                    onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small">
+                    </lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate" style="font-weight: bold;">
+                    Assign Measure</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <template if:true={measureId}>
+                    <lightning-record-view-form record-id={measureId} object-api-name="Measure__c">
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-output-field field-name="Name" field-class='slds-truncate'>
+                                </lightning-output-field>
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <div class="slds-form-element__label">Target</div>
+                                    <div class="slds-form-element__control">
+                                        <div class="slds-truncate slds-form-element__static">
+                                            {sumTarget}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-output-field field-name="Comments__c" field-class='slds-truncate'>
+                                </lightning-output-field>
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <div class="slds-form-element__label">Current Value</div>
+                                    <div class="slds-form-element__control">
+                                        <div class="slds-truncate slds-form-element__static">
+                                            {sumAchieved}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-record-view-form>
+                </template>
+                <template if:false={measureId}>
+                    <lightning-layout horizontal-align="space" multiple-rows="true">
+
+                        <lightning-layout-item class="slds-p-around_small" size="5">
+                            <lightning-input name="name" label="Name" type="text" value={name} data-field="name"
+                                onchange={handleNameChange} required="true" max-length="80"></lightning-input>
+                            <c-field-length maximum-length="80" input-text={name} data-field="namesize">
+                            </c-field-length>
+                        </lightning-layout-item>
+                        <lightning-layout-item class="slds-p-around_small" size="7">
+                            <lightning-textarea name="comment" label="Comment" max-length="1000" value={comment}
+                                data-field="comment" onchange={handleCommentChange}></lightning-textarea>
+                            <c-field-length maximum-length="1000" input-text={comment} data-field="commentsize">
+                            </c-field-length>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout horizontal-align="space" multiple-rows="true">
+                        <lightning-layout-item class="slds-p-around_small" size="6">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <div class="slds-form-element__label">Target</div>
+                                <div class="slds-form-element__control">
+                                    <div class="slds-truncate slds-form-element__static">
+                                        {sumTarget}
+                                    </div>
+                                </div>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item class="slds-p-around_small" size="6">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <div class="slds-form-element__label">Current Target</div>
+                                <div class="slds-form-element__control">
+                                    <div class="slds-truncate slds-form-element__static">
+                                        {sumAchieved}
+                                    </div>
+                                </div>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </template>
+                <div class='slds-box'>
+                    <div class="slds-m-bottom_medium">
+                        <c-look-up-component object-api-name="User" icon-name="standard:people"
+                            placeholder="Search user here ..." onrecordselection={handleUserSelect}
+                            query-string={queryString} pre-selected-values={measureTeamList} onremoverecord={remove}>
+                        </c-look-up-component>
+                    </div>
+                    <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal">
+                        <thead>
+                            <tr class="slds-text-title_caps">
+                                <th class="slds-cell-shrink" scope="col">
+                                    <div class="slds-truncate" title="Name">Name</div>
+                                </th>
+                                <th scope="col" style="text-align: right;">
+                                    <div class="slds-truncate" title="Actual Target">Actual Target</div>
+                                </th>
+                                <th scope="col" style="text-align: right;">
+                                    <div class="slds-truncate" title="Current Value">Current Value</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={measureTeamList} for:item="measureTeamObj">
+                                <tr class="slds-hint-parent" key={measureTeamObj.Id}
+                                    data-teammemrowid={measureTeamObj.Team_Member__r.Id}>
+                                    <td class="slds-cell-shrink" data-label="Name">
+                                        <div class="slds-truncate" title={measureTeamObj.Team_Member__r.Name}>
+                                            <p>{measureTeamObj.Team_Member__r.Name}
+                                            </p>
+                                        </div>
+                                    </td>
+                                    <td data-label="Actual Target">
+                                        <div class="slds-truncate" style="float:right;">
+                                            <lightning-input type="number" onchange={handleTargetChange}
+                                                data-recid={measureTeamObj.Id}
+                                                data-teammemid={measureTeamObj.Team_Member__r.Id}
+                                                value={measureTeamObj.applicableTarget} label="Actual Target"
+                                                variant="label-hidden" style="width:60px;" data-type='target'
+                                                data-targetset={measureTeamObj.applicableTarget}>
+                                            </lightning-input>
+                                        </div>
+                                    </td>
+                                    <td data-label="Current Value">
+                                        <div class="slds-truncate" style="float:right;"
+                                            data-achieved={measureTeamObj.applicableValue}>
+                                            <template if:true={measureTeamObj.isLoggedInUser}>
+                                                <div class="slds-truncate" style="float:right;">
+                                                    <lightning-input type="number" label='Manager Current Progress'
+                                                        variant="label-hidden" value={measureTeamObj.applicableValue} style="width:60px;" onchange={handleUserCurrentValueChange} data-record={measureTeamObj.Id}></lightning-input>
+                                                </div>
+                                            </template>
+                                            <template if:false={measureTeamObj.isLoggedInUser}>
+                                                <div class="slds-truncate" style="float:right;">
+                                                    <lightning-input type="number" label='Manager Current Progress'
+                                                        variant="label-hidden" style="width:60px;"
+                                                        value={measureTeamObj.applicableValue} disabled></lightning-input>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+                <lightning-layout horizontal-align="spread" multiple-rows="true">
+
+                    <lightning-layout-item class="slds-p-around_small" size="7">
+
+                        <legend class="slds-form-element__legend slds-form-element__label">
+                            <abbr class="slds-required" title="required">*</abbr>
+                            Priority
+                        </legend>
+
+                        <lightning-layout horizontal-align="spread" class="slds-form-element__control">
+                            <lightning-layout-item class="slds-radio">
+                                <input id="priority1" type="radio" value="High" name="priority" checked={highPriority}
+                                    onchange={handlePriorityChange} />
+                                <label class="slds-radio__label" for="priority1">
+                                    <span class="slds-radio_faux"></span>
+                                    <span class="slds-form-element__label">High</span>
+                                </label>
+                            </lightning-layout-item>
+                            <lightning-layout-item class="slds-radio">
+                                <input id="priority2" type="radio" value="Medium" name="priority"
+                                    checked={mediumPriority} onchange={handlePriorityChange} />
+                                <label class="slds-radio__label" for="priority2">
+                                    <span class="slds-radio_faux"></span>
+                                    <span class="slds-form-element__label">Medium</span>
+                                </label>
+                            </lightning-layout-item>
+                            <lightning-layout-item class="slds-radio">
+                                <input id="priority3" type="radio" value="Low" name="priority" checked={lowPriority}
+                                    onchange={handlePriorityChange} />
+                                <label class="slds-radio__label" for="priority3">
+                                    <span class="slds-radio_faux"></span>
+                                    <span class="slds-form-element__label">Low</span>
+                                </label>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </lightning-layout-item>
+                    <lightning-layout-item class="slds-p-around_small" size="5">
+                    </lightning-layout-item>
+
+
+                    <lightning-layout-item class="slds-p-around_small" size="12">
+                        <lightning-textarea name="obstacles" label="Obstacles" max-length="1000" value={obstacles}
+                            data-field="obstacles" onchange={handleObstacleChange}></lightning-textarea>
+                        <c-field-length maximum-length="1000" input-text={obstacles} data-field="obstaclessize">
+                        </c-field-length>
+                    </lightning-layout-item>
+                </lightning-layout>
+
+                <!--div class="slds-m-top_x-small">
+
+                    <div class="slds-clearfix">
+                        <div class="slds-float_right">
+
+                            <lightning-button variant="brand" label="Assign" onclick={saveAssignments}
+                                class="slds-m-left_x-small">
+                            </lightning-button>
+                            <lightning-button label="Cancel" onclick={closeAssign} class="slds-m-left_x-small">
+                            </lightning-button>
+                        </div>
+                    </div>
+                </div-->
+            </div>
+            <footer class="slds-modal__footer">
+                <lightning-button variant="base" onclick={closeModal} title="Cancel" label="Cancel"
+                    icon-name="utility:close" class="slds-m-left_x-small"></lightning-button>
+                <lightning-button variant="base" onclick={saveAssignments} title="Save" label="Save"
+                    icon-name="utility:save" class="slds-m-left_x-small" disabled={disableSave}></lightning-button>
+            </footer>
+        </div>
+    </section>
+
+    <template if:true={isRemoveMember}>
+        <c-delete-user-popup onrecordremove={handleRemoveMember} user-id={removeUserId} member-id={removeMemberId}
+            oncancelremove={handleCancelDelete}></c-delete-user-popup>
+    </template>
+
+</template>

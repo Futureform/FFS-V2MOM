@@ -1,0 +1,53 @@
+<template>
+    <article class="slds-card" style="background-color:#f7f7f7">
+        <div class="slds-card__header slds-grid" >
+        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+            <div class="slds-media__body">
+            <h2 class="slds-card__header-title slds-text-heading_small slds-truncate" title="Recent Activities">
+                <span>Recent Activities</span>
+            </h2>
+            </div>
+        </header>
+        </div>
+    </article>    
+    <lightning-card>
+        <template if:true={hasRecentActivities}>
+            <div class="slds-p-horizontal_x-small slds-p-bottom_small">
+                <ul class="slds-has-dividers_bottom-space">
+                    <template for:each={recentActivities} for:item="item">
+                        <li class="slds-item" key={item.feedId}>
+                            <article class="slds-tile slds-media">
+                                <div class="slds-media__figure">
+                                    <lightning-dynamic-icon type="score" option="positive"></lightning-dynamic-icon>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h3 class="slds-tile__title slds-text-heading_small slds-truncate" title={item.record.Name} if:true={item.record.isV2MOM}>
+                                        {item.record.sObjectType}
+                                    </h3>
+                                    <h3 class="slds-tile__title slds-text-heading_small slds-truncate" title={item.record.Name} if:false={item.record.isV2MOM}>
+                                        {item.record.sObjectType} - {item.record.Name}
+                                    </h3>
+                                    <div class="slds-tile__detail">
+                                        <p class="slds-item_label" if:false={item.isCreated}><b>{item.fieldLabel}</b> changed from <i>{item.fieldHistory.OldValue}</i> to <i>{item.fieldHistory.NewValue}</i></p>
+                                        <p class="slds-item_label" if:true={item.isCreated}><b><i>Created</i></b></p>
+                                        <ul class="slds-list_horizontal slds-has-dividers_left slds-text-color_weak slds-text-align_right" style="float:right">
+                                            <li class="slds-item">
+                                                <lightning-relative-date-time value={item.createdDateTime}></lightning-relative-date-time>
+                                            </li>
+                                            <li class="slds-item">
+                                                <lightning-formatted-date-time value={item.createdDateTime} year="numeric" month="short" day="2-digit"></lightning-formatted-date-time>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </article>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </template>
+        <template if:false={hasRecentActivities}>
+            <p class="slds-p-horizontal_small slds-p-bottom_small">No Activities Found!!</p>
+        </template>
+    </lightning-card>    
+</template>

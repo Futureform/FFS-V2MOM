@@ -1,0 +1,60 @@
+<template>
+    
+
+
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+    aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open flex">
+    <div class="slds-modal__container modalContainer">
+        <header class="slds-modal__header">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small">
+                </lightning-icon>
+                <span class="slds-assistive-text">Close</span>
+            </button>
+            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate" style="font-weight: bold;">{popupHeader}</h2>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+           
+                <div class="slds-p-bottom_x-small">
+                    
+                    <div class="slds-grid slds-gutters slds-p-top_x-small">
+            
+                        <template if:true={quarter1}>
+                        <div class="slds-col">
+                            <lightning-input type="checkbox" label="Q1" name="input1" checked={Q1} data-field="Q1" disabled={disableQ1}
+                            onclick={onQuarterCheck}></lightning-input>
+                         </div>
+                        </template>
+                        <template if:true={quarter2}>
+                        <div class="slds-col">
+                            <lightning-input type="checkbox" label="Q2" name="input1" checked={Q2} data-field="Q2" disabled={disableQ2}
+                            onclick={onQuarterCheck}></lightning-input>     
+                               </div>
+                    </template>
+                    <template if:true={quarter3}>
+                        <div class="slds-col">
+                            <lightning-input type="checkbox" label="Q3" name="input1" checked={Q3} data-field="Q3" disabled={disableQ3}
+                            onclick={onQuarterCheck}></lightning-input>         
+                           </div>
+                    </template>
+                    <template if:true={quarter4}>
+                        <div class="slds-col">
+                            <lightning-input type="checkbox" label="Q4" name="input1" checked={Q4} data-field="Q4" disabled={disableQ4}
+                            onclick={onQuarterCheck}></lightning-input>        
+                            </div>
+                    </template>
+                    </div>
+                </div>
+            
+        </div>
+        <footer class="slds-modal__footer">
+            <lightning-button variant="base" onclick={saveData} title="Save" label="Save"
+                icon-name="utility:save" class="slds-m-left_x-small"></lightning-button>
+            <lightning-button variant="base" onclick={closeModal} title="Cancel" label="Cancel"
+                icon-name="utility:close" class="slds-m-left_x-small"></lightning-button>
+        </footer>
+    </div>
+</section>
+
+   
+</template>

@@ -1,0 +1,32 @@
+.backgroundClass {
+    background-color: #f7f7f7;
+    height: 100%;
+}
+
+.whiteBG {
+    background-color: #ffffff;
+}
+
+.title {
+    background-color: #f7f7f7;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 1.2em;
+    padding: 0.45em;
+}
+.navigationElements {
+    font-size: larger;
+    font-weight : bolder;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.slds-breadcrumb .slds-list__item:before, .slds-breadcrumb .slds-breadcrumb__item:before {
+    top:0.20rem
+}
+
+.progress-ring-container{
+    padding-top: 1%;
+    padding-left: 3.5%;
+    padding-right: 3.5%;
+    padding-bottom: 0.1%;
+}

@@ -1,0 +1,243 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <lightning-card class="bg" if:false={isNew}>
+        <div>
+            <div class="slds-p-left_large slds-p-bottom_large slds-p-right_large">
+                <div class="d1">
+                    <div class="slds-page-header"
+                        style="cursor: pointer; box-shadow: 2px 3px lightgrey; background: white;" onclick={sectionOne}>
+                        <section class="slds-clearfix">
+                            <img class="slds-float_left" src="https://i.imgur.com/AdHFQw4.png" />
+                            <div class="slds-float_right">
+                                <lightning-icon icon-name="utility:chevrondown" size="x-small"
+                                    alternative-text="Indicates add"></lightning-icon>
+                            </div>
+                            <div class="slds-m-left--large">
+                                <div class="title">Vision</div>
+                                <div class="subTitle">Write down your Vision for the year in alignment to the Company's
+                                    Vision or Copy your manager's vision</div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="slds-hide slds-p-around--medium" data-id="s1">
+                        <div class="slds-float_right" style="margin-bottom:1em" if:true={canUserEdit}>
+                            <lightning-button-icon class="icons" icon-name="utility:copy" variant="bare"
+                                alternative-text="copy" title="Copy Manager's Vision" slot="actions" onclick={copyVision}
+                                if:true={isVisionEditMode} disabled={disableManagerCopy}></lightning-button-icon>
+                            <lightning-button-icon class="icons" icon-name="utility:save" variant="bare"
+                                alternative-text="save" title="Save" slot="actions" onclick={updateVision}
+                                if:true={isVisionEditMode} type="submit" disabled={disableVisionSave}>
+                            </lightning-button-icon>
+                            <lightning-button-icon class="icons" icon-name="utility:close" variant="bare"
+                                alternative-text="cancel" title="Cancel" slot="actions" onclick={cancelVision}
+                                if:true={isVisionEditMode}>
+                            </lightning-button-icon>
+                            <lightning-button-icon class="icons" icon-name="utility:video" variant="bare" size="medium"
+                                alternative-text="video" title="Video" slot="actions" onclick={showVisionVideo}
+                                if:false={isVisionEditMode}>
+                            </lightning-button-icon>
+                            <lightning-button-icon class="icons" icon-name="utility:edit" variant="bare"
+                                alternative-text="edit" title="Edit" slot="actions" onclick={editVision}
+                                if:false={isVisionEditMode}>
+                            </lightning-button-icon>
+                        </div>
+                        <div class="slds-p-horizontal_small" if:true={isVisionEditMode}>
+                            <textarea data-field="vision" rows="10" class="slds-textarea" maxlength="32768"
+                                onkeyup={updateVisionCharacters}>{vision}</textarea>
+                            <div class="slds-text-align_right slds-text-body_small">{visLength} characters left
+                            </div>
+                        </div>
+                        <div class="slds-p-horizontal_small" if:false={isVisionEditMode}>
+                            <lightning-formatted-text value={vision}></lightning-formatted-text>
+                        </div>
+                    </div>
+                </div>
+                <div class="d1">
+                    <div class="slds-page-header"
+                        style="cursor: pointer;  box-shadow: 2px 3px lightgrey; background: white;"
+                        onclick={sectionTwo}>
+                        <section class="slds-clearfix">
+                            <img class="slds-float_left" src="https://i.imgur.com/OGNCmK1.png" />
+
+                            <div class="slds-float--right">
+                                <lightning-icon icon-name="utility:chevrondown" size="x-small"
+                                    alternative-text="Indicates add"></lightning-icon>
+
+                            </div>
+                            <div class="slds-m-left--large">
+                                <div class="title">Values</div>
+                                <div class="subTitle">Write down your Values for the year in alignment to the Company's
+                                    Values or Copy your manager's Values </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="slds-hide slds-p-around--medium" data-id="s2">
+                        <div class="slds-float_right" style="margin-bottom:1em" if:true={canUserEdit}>
+                            <lightning-button-icon class="icons" icon-name="utility:copy" variant="bare"
+                                alternative-text="copy" title="Copy Manager's Values" slot="actions" onclick={copyValue}
+                                if:true={isValueEditMode} disabled={disableManagerCopy}></lightning-button-icon>
+                            <lightning-button-icon class="icons" icon-name="utility:save" variant="bare"
+                                alternative-text="save" title="Save" slot="actions" onclick={updateValue}
+                                if:true={isValueEditMode} disabled={disableValueSave}></lightning-button-icon>
+                            <lightning-button-icon class="icons" icon-name="utility:close" variant="bare"
+                                alternative-text="cancel" title="Cancel" slot="actions" onclick={cancelValue}
+                                if:true={isValueEditMode}>
+                            </lightning-button-icon>
+                            <lightning-button-icon class="icons" icon-name="utility:video" variant="bare"
+                                alternative-text="video" title="Video" slot="actions" onclick={showValueVideo}
+                                if:false={isValueEditMode}>
+                            </lightning-button-icon>
+                            <lightning-button-icon class="icons" icon-name="utility:edit" variant="bare"
+                                alternative-text="edit" title="Edit" slot="actions" onclick={editValue}
+                                if:false={isValueEditMode}>
+                            </lightning-button-icon>
+                        </div>
+                        <div class="slds-p-horizontal_small" if:true={isValueEditMode}>
+                            <textarea data-field="value" rows="10" class="slds-textarea" maxlength="32768"
+                                onkeyup={updateValueCharacters}>{value}</textarea>
+                            <div class="slds-text-align_right slds-text-body_small">{valLength} characters left
+                            </div>
+                        </div>
+                        <div class="slds-p-horizontal_small" if:false={isValueEditMode}>
+                            <lightning-formatted-text value={value}></lightning-formatted-text>
+                        </div>
+                    </div>
+                </div>
+                <div class="d1">
+
+                    <div class="slds-page-header"
+                        style="cursor: pointer; box-shadow: 2px 3px lightgrey; background: white;"
+                        onclick={sectionThree}>
+                        <section class="slds-clearfix">
+                            <img class="slds-float_left" src="https://i.imgur.com/htzzH6h.png">
+
+                            <div class="slds-float--right">
+                                <lightning-icon icon-name="utility:chevrondown" size="x-small"
+                                    alternative-text="Indicates add"></lightning-icon>
+                            </div>
+                            <div class="slds-m-left--large">
+                                <div class="title">Obstacles</div>
+                                <div class="subTitle">Write down your Obstacles for the year in alignment to the
+                                    Company's Obstacles along with your personal obstacles that could slow down the
+                                    goals</div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div data-id="s3" class="slds-hide slds-p-around--medium">
+                        <div class="icons" style="margin-bottom: 2em !important;text-align:right;"
+                            if:true={canUserEdit}>
+                            <lightning-button-icon class="icons" icon-name="utility:video" variant="bare"
+                                alternative-text="video" title="Video" slot="actions" onclick={showObstacleVideo}>
+                            </lightning-button-icon>
+                            <lightning-button-icon class="icons" icon-name="utility:add" variant="bare"
+                                alternative-text="new" title="New" slot="actions" onclick={createObstacle}>
+                            </lightning-button-icon>
+                        </div>
+                        <div style="background:#f6f7f8; margin-top: 2em;">
+                            <template for:each={obstacles.data} for:item='obstacle'>
+                                <c-obstacle-card id={obstacle.Id} key={obstacle.Id} v2mom-id={v2momId}
+                                    obstacle-id={obstacle.Id} onrefreshrec={handleRefresh}></c-obstacle-card>
+                            </template>
+                            <c-obstacle-card v2mom-id={v2momId} if:true={newObstacle} ondeleteobstacle={hideNewObstacle}
+                                onrefreshrec={handleRefresh}></c-obstacle-card>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </lightning-card>
+
+    <template if:true={showManagersPopover}>
+        <c-managers-data-popover popup-header={popupHeader} type={popupType} manager-id={managerId}
+            onclosemodal={closeModal} oncopytext={handleTextCopy}></c-managers-data-popover>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <article class="slds-card" if:true={isNew}>
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__body">
+                    <h2 class="slds-text-heading_medium slds-card__header-title slds-align_absolute-center"
+                        style="font-weight:lighter;">
+                        Write your Vision and Values and then choose your Quarter to activate it and add its Method and
+                        Measures
+                    </h2>
+                </div>
+                <div class="slds-no-flex">
+                    <!--lightning-button-icon class="icons" icon-name="utility:edit" variant="bare" alternative-text="Edit"
+                    if:false={isNewEditMode} onclick={showNewEdit}></lightning-button-icon-->
+                    <lightning-button label='New' icon-name="utility:add" variant="Neutral" if:false={isNewEditMode}
+                        onclick={showNewEdit}></lightning-button>
+                    <lightning-button-icon class="icons" icon-name="utility:close" variant="bare"
+                        alternative-text="Cancel" if:true={isNewEditMode} onclick={hideNewEdit}></lightning-button-icon>
+                </div>
+            </header>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <article class="value-class slds-card">
+                <div class="slds-card__header slds-grid">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__figure">
+                            <lightning-avatar src="https://i.imgur.com/AdHFQw4.png" size="large"></lightning-avatar>
+                        </div>
+                        <div class="slds-media__body">
+                            <p class="slds-card__header-title title">Vision</p>
+                            <p class="subTitle">Write down your Vision for the year in alignment to the Company's Vision
+                                or Copy your manager's vision</p>
+                        </div>
+                        <div class="slds-no-flex">
+                            <lightning-button-icon class="slds-m-left_xx-small icons" icon-name="utility:video"
+                                variant="bare" alternative-text="video" title="Video" size="medium"
+                                onclick={showVisionVideo} if:false={isNewEditMode}></lightning-button-icon>
+                            <lightning-button-icon class="slds-m-left_xx-small icons" icon-name="utility:copy"
+                                variant="bare" alternative-text="copy" title="Copy Manager's Vision" onclick={copyVision}
+                                if:true={isNewEditMode} disabled={disableManagerCopy}></lightning-button-icon>
+                        </div>
+                    </header>
+                </div>
+                <div class="slds-card__body slds-card__body_inner slds-p-horizontal_medium slds-p-bottom_medium">
+                    <textarea data-field="newvision" rows="5" class="slds-textarea" maxlength="32768"
+                        onkeyup={updateVisionCharacters} if:true={isNewEditMode}></textarea>
+                    <div class="slds-text-align_right slds-text-body_small" if:true={isNewEditMode}>{visLength}
+                        characters left</div>
+                </div>
+            </article>
+            <article class="value-class slds-card">
+                <div class="slds-card__header slds-grid">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__figure">
+                            <lightning-avatar src="https://i.imgur.com/OGNCmK1.png" size="large"></lightning-avatar>
+                        </div>
+                        <div class="slds-media__body">
+                            <p class="slds-card__header-title title">Values</p>
+                            <p class="subTitle">Write down your Values for the year in alignment to the Company's Values
+                                or Copy your manager's Values</p>
+                        </div>
+                        <div class="slds-no-flex">
+                            <lightning-button-icon class="slds-m-left_xx-small icons" icon-name="utility:video"
+                                variant="bare" alternative-text="video" title="Video" onclick={showValueVideo}
+                                if:false={isNewEditMode}></lightning-button-icon>
+                            <lightning-button-icon class="slds-m-left_xx-small icons" icon-name="utility:copy"
+                                variant="bare" alternative-text="copy" title="Copy Manager's Vision" onclick={copyVision}
+                                if:true={isNewEditMode} disabled={disableManagerCopy}></lightning-button-icon>
+                        </div>
+                    </header>
+                </div>
+                <div class="slds-card__body slds-card__body_inner slds-p-horizontal_medium slds-p-bottom_medium">
+                    <textarea data-field="newvalue" rows="5" class="slds-textarea" maxlength="32768"
+                        onkeyup={updateValueCharacters} if:true={isNewEditMode}></textarea>
+                    <div class="slds-text-align_right slds-text-body_small" if:true={isNewEditMode}>{valLength}
+                        characters left</div>
+                </div>
+            </article>
+        </div>
+        <footer class="slds-card__footer slds-text-align_center" if:true={isNewEditMode}>
+            <lightning-button variant="brand" title="Create V2MOM" label="Create V2MOM" disabled={disableCreate}
+                onclick={createV2MOM}></lightning-button>
+        </footer>
+    </article>
+</template>

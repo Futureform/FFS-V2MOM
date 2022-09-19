@@ -1,0 +1,372 @@
+<template>
+    <div class="backgroundClass">
+        <lightning-layout class="slds-wrap" multiple-rows="true">
+            <lightning-layout-item size="12">
+                <lightning-layout class="slds-wrap slds-p-around_x-small" multiple-rows="true">
+                    <lightning-layout-item size="12" if:true={userRec.data}>
+                        <c-v2mom-banner user-rec={userRec} manager-rec={managerRec} v2mom={V2MOMRec}
+                            onfychange={handlefychange} current-f-y={currentFY} if:true={currentFY} is-new={isNew}
+                            view={view} onviewchange={handleViewChange} is-manager={isManager}
+                            current-user-id={currentUserId} is-user-record={isUserRecord}>
+                        </c-v2mom-banner>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-layout-item>
+        </lightning-layout>
+
+        <template if:true={showManagerView}>
+            <c-manager-view manager-id={userId} fy={currentV2MOMYear}></c-manager-view>
+        </template>
+
+        <template if:false={showManagerView}>
+            <div class="slds-p-left_medium" if:false={isNew}>
+                <nav role="navigation" aria-label="Breadcrumbs">
+                    <ol class="slds-breadcrumb slds-list_horizontal slds-wrap slds-grid_vertical-align-center">
+                        <li class="slds-breadcrumb__item slds-show slds-p-horizontal_x-small" data-id="homeNavEle"
+                            onclick={navigateHome}>
+                            <lightning-badge label="Home" icon-name="utility:home" class="navigationElements">
+                            </lightning-badge>
+                        </li>
+                        <template for:each={navigationElements} for:item='navElement'>
+                            <li key={navElement} class="slds-breadcrumb__item slds-show slds-p-horizontal_x-small"
+                                data-id={navElement.Id}>
+                                <lightning-badge label={navElement.label} class="navigationElements"
+                                    data-id={navElement.Id} data-value={navElement.value} onclick={handleNavigation}>
+                                </lightning-badge>
+                            </li>
+                        </template>
+                    </ol>
+                </nav>
+            </div>
+
+            <template if:true={showHome}>
+                <lightning-layout class="slds-wrap" multiple-rows="true" style="height:80%;">
+                    <lightning-layout-item size="12" style="height:100%;">
+                        <lightning-layout class="slds-wrap" multiple-rows="true" style="height:100%;">
+                            <template if:false={isUserRecord}>
+                                <lightning-layout-item class="slds-scrollable_y" size="9" style="height:100%;">
+                                    <lightning-layout class="slds-wrap" multiple-rows="true">
+                                        <lightning-layout-item size="12" if:false={isNew}>
+                                            <lightning-layout class="slds-wrap slds-p-around_x-small"
+                                                multiple-rows="true">
+                                                <lightning-layout-item size="12">
+                                                    <lightning-layout class="slds-wrap" horizontal-align="space"
+                                                        multiple-rows="true">
+                                                        <lightning-layout-item size="3" class="progress-ring-container"
+                                                            data-name="methods">
+                                                            <c-progress-ring percentage={Q1Val} title="Q1"
+                                                                onclick={handleQuarterClick}></c-progress-ring>
+                                                            <div class="slds-m-top_medium slds-align_absolute-center"
+                                                                if:true={V2MOMRec.data}>
+                                                                <lightning-button label="Check In" title="Check In Q1"
+                                                                    onclick={handleCheck} name="Q1CheckIn"
+                                                                    variant="brand" value="Q1"
+                                                                    if:false={V2MOMRec.data.fields.Q1_Check_In__c.value}
+                                                                    disabled={userCheckinDisabled}></lightning-button>
+                                                                <lightning-button-group
+                                                                    if:true={V2MOMRec.data.fields.Q1_Check_In__c.value}>
+                                                                    <lightning-button label="Checked In" disabled>
+                                                                    </lightning-button>
+                                                                    <lightning-button-menu
+                                                                        if:true={V2MOMRec.data.fields.Q1_Check_In__c.value}>
+                                                                        <lightning-menu-item value="Q1"
+                                                                            label="Undo Check In"
+                                                                            onclick={handleUncheck}>
+                                                                        </lightning-menu-item>
+                                                                    </lightning-button-menu>
+                                                                </lightning-button-group>
+                                                            </div>
+                                                        </lightning-layout-item>
+                                                        <lightning-layout-item size="3" class="progress-ring-container"
+                                                            data-name="methods">
+                                                            <c-progress-ring percentage={Q2Val} title="Q2"
+                                                                onclick={handleQuarterClick}></c-progress-ring>
+                                                            <div class="slds-m-top_medium slds-align_absolute-center"
+                                                                if:true={V2MOMRec.data}>
+                                                                <lightning-button label="Check In" title="Check In Q2"
+                                                                    onclick={handleCheck} name="Q2CheckIn"
+                                                                    variant="brand" value="Q2"
+                                                                    if:false={V2MOMRec.data.fields.Q2_Check_In__c.value}
+                                                                    ></lightning-button>
+                                                                <lightning-button-group
+                                                                    if:true={V2MOMRec.data.fields.Q2_Check_In__c.value}>
+                                                                    <lightning-button label="Checked In" disabled>
+                                                                    </lightning-button>
+                                                                    <lightning-button-menu
+                                                                        if:true={V2MOMRec.data.fields.Q2_Check_In__c.value}>
+                                                                        <lightning-menu-item value="Q2"
+                                                                            label="Undo Check In"
+                                                                            onclick={handleUncheck}>
+                                                                        </lightning-menu-item>
+                                                                    </lightning-button-menu>
+                                                                </lightning-button-group>
+                                                            </div>
+                                                        </lightning-layout-item>
+                                                        <lightning-layout-item size="3" class="progress-ring-container"
+                                                            data-name="methods">
+                                                            <c-progress-ring percentage={Q3Val} title="Q3"
+                                                                onclick={handleQuarterClick}></c-progress-ring>
+                                                            <div class="slds-m-top_medium slds-align_absolute-center"
+                                                                if:true={V2MOMRec.data}>
+                                                                <lightning-button label="Check In" title="Check In Q3"
+                                                                    onclick={handleCheck} name="Q3CheckIn"
+                                                                    variant="brand" value="Q3"
+                                                                    if:false={V2MOMRec.data.fields.Q3_Check_In__c.value}
+                                                                    ></lightning-button>
+                                                                <lightning-button-group
+                                                                    if:true={V2MOMRec.data.fields.Q3_Check_In__c.value}>
+                                                                    <lightning-button label="Checked In" disabled>
+                                                                    </lightning-button>
+                                                                    <lightning-button-menu
+                                                                        if:true={V2MOMRec.data.fields.Q3_Check_In__c.value}>
+                                                                        <lightning-menu-item value="Q3"
+                                                                            label="Undo Check In"
+                                                                            onclick={handleUncheck}>
+                                                                        </lightning-menu-item>
+                                                                    </lightning-button-menu>
+                                                                </lightning-button-group>
+                                                            </div>
+                                                        </lightning-layout-item>
+                                                        <lightning-layout-item size="3" class="progress-ring-container"
+                                                            data-name="methods">
+                                                            <c-progress-ring percentage={Q4Val} title="Q4"
+                                                                onclick={handleQuarterClick}></c-progress-ring>
+                                                            <div class="slds-m-top_medium slds-align_absolute-center"
+                                                                if:true={V2MOMRec.data}>
+                                                                <lightning-button label="Check In" title="Check In Q4"
+                                                                    onclick={handleCheck} name="Q4CheckIn"
+                                                                    variant="brand" value="Q4"
+                                                                    if:false={V2MOMRec.data.fields.Q4_Check_In__c.value}
+                                                                    ></lightning-button>
+                                                                <lightning-button-group
+                                                                    if:true={V2MOMRec.data.fields.Q4_Check_In__c.value}>
+                                                                    <lightning-button label="Checked In" disabled>
+                                                                    </lightning-button>
+                                                                    <lightning-button-menu
+                                                                        if:true={V2MOMRec.data.fields.Q4_Check_In__c.value}>
+                                                                        <lightning-menu-item value="Q4"
+                                                                            label="Undo Check In"
+                                                                            onclick={handleUncheck}>
+                                                                        </lightning-menu-item>
+                                                                    </lightning-button-menu>
+                                                                </lightning-button-group>
+                                                            </div>
+                                                        </lightning-layout-item>
+                                                    </lightning-layout>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                        </lightning-layout-item>
+                                        <div class='slds-text-heading_medium slds-card__header-title slds-align_absolute-center slds-p-top_medium'
+                                            style='font-weight:lighter' if:false={isNew}>Click on the quarter to view
+                                            measures and methods</div>
+                                        <lightning-layout-item size="12">
+                                            <lightning-layout class="slds-wrap slds-p-around_x-small"
+                                                multiple-rows="true">
+                                                <lightning-layout-item size="12">
+                                                    <lightning-layout class="slds-wrap" multiple-rows="true">
+                                                        <lightning-layout-item size="12">
+                                                            <lightning-layout class="slds-wrap" multiple-rows="true">
+                                                                <lightning-layout-item size="12">
+                                                                    <c-values-and-vision v2mom={V2MOMRec}
+                                                                        user-rec={userRec}
+                                                                        oncreatev2mom={handlefychange}
+                                                                        onvisionupdated={refreshV2MOMrec}
+                                                                        financial-year={currentFY} is-new={isNew}
+                                                                        can-user-edit={otherUserEdit}>
+                                                                    </c-values-and-vision>
+                                                                </lightning-layout-item>
+                                                            </lightning-layout>
+                                                        </lightning-layout-item>
+                                                    </lightning-layout>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                </lightning-layout-item>
+                            </template>
+                            <template if:true={isUserRecord}>
+                                <lightning-layout-item class="slds-scrollable_y" size="12" style="height:100%;">
+                                    <lightning-layout class="slds-wrap" multiple-rows="true">
+                                        <lightning-layout-item size="12" if:false={isNew}>
+                                            <lightning-layout class="slds-wrap slds-p-around_x-small"
+                                                multiple-rows="true">
+                                                <lightning-layout-item size="12">
+                                                    <lightning-layout class="slds-wrap" horizontal-align="space"
+                                                        multiple-rows="true">
+                                                        <lightning-layout-item size="3" class="progress-ring-container"
+                                                            data-name="methods">
+                                                            <c-progress-ring percentage={Q1Val} title="Q1"
+                                                                onclick={handleQuarterClick}></c-progress-ring>
+                                                            <div class="slds-m-top_medium slds-align_absolute-center"
+                                                                if:true={V2MOMRec.data}>
+                                                                <lightning-button label="Check In" title="Check In Q1"
+                                                                    onclick={handleCheck} name="Q1CheckIn"
+                                                                    variant="brand" value="Q1"
+                                                                    if:false={V2MOMRec.data.fields.Q1_Check_In__c.value}
+                                                                    disabled={userCheckinDisabled}></lightning-button>
+                                                                <lightning-button-group
+                                                                    if:true={V2MOMRec.data.fields.Q1_Check_In__c.value}>
+                                                                    <lightning-button label="Checked In" disabled>
+                                                                    </lightning-button>
+                                                                    <lightning-button-menu
+                                                                        if:true={V2MOMRec.data.fields.Q1_Check_In__c.value}>
+                                                                        <lightning-menu-item value="Q1"
+                                                                            label="Undo Check In"
+                                                                            onclick={handleUncheck}>
+                                                                        </lightning-menu-item>
+                                                                    </lightning-button-menu>
+                                                                </lightning-button-group>
+                                                            </div>
+                                                        </lightning-layout-item>
+                                                        <lightning-layout-item size="3" class="progress-ring-container"
+                                                            data-name="methods">
+                                                            <c-progress-ring percentage={Q2Val} title="Q2"
+                                                                onclick={handleQuarterClick}></c-progress-ring>
+                                                            <div class="slds-m-top_medium slds-align_absolute-center"
+                                                                if:true={V2MOMRec.data}>
+                                                                <lightning-button label="Check In" title="Check In Q2"
+                                                                    onclick={handleCheck} name="Q2CheckIn"
+                                                                    variant="brand" value="Q2"
+                                                                    if:false={V2MOMRec.data.fields.Q2_Check_In__c.value}
+                                                                    ></lightning-button>
+                                                                <lightning-button-group
+                                                                    if:true={V2MOMRec.data.fields.Q2_Check_In__c.value}>
+                                                                    <lightning-button label="Checked In" disabled>
+                                                                    </lightning-button>
+                                                                    <lightning-button-menu
+                                                                        if:true={V2MOMRec.data.fields.Q2_Check_In__c.value}>
+                                                                        <lightning-menu-item value="Q2"
+                                                                            label="Undo Check In"
+                                                                            onclick={handleUncheck}>
+                                                                        </lightning-menu-item>
+                                                                    </lightning-button-menu>
+                                                                </lightning-button-group>
+                                                            </div>
+                                                        </lightning-layout-item>
+                                                        <lightning-layout-item size="3" class="progress-ring-container"
+                                                            data-name="methods">
+                                                            <c-progress-ring percentage={Q3Val} title="Q3"
+                                                                onclick={handleQuarterClick}></c-progress-ring>
+                                                            <div class="slds-m-top_medium slds-align_absolute-center"
+                                                                if:true={V2MOMRec.data}>
+                                                                <lightning-button label="Check In" title="Check In Q3"
+                                                                    onclick={handleCheck} name="Q3CheckIn"
+                                                                    variant="brand" value="Q3"
+                                                                    if:false={V2MOMRec.data.fields.Q3_Check_In__c.value}
+                                                                    ></lightning-button>
+                                                                <lightning-button-group
+                                                                    if:true={V2MOMRec.data.fields.Q3_Check_In__c.value}>
+                                                                    <lightning-button label="Checked In" disabled>
+                                                                    </lightning-button>
+                                                                    <lightning-button-menu
+                                                                        if:true={V2MOMRec.data.fields.Q3_Check_In__c.value}>
+                                                                        <lightning-menu-item value="Q3"
+                                                                            label="Undo Check In"
+                                                                            onclick={handleUncheck}>
+                                                                        </lightning-menu-item>
+                                                                    </lightning-button-menu>
+                                                                </lightning-button-group>
+                                                            </div>
+                                                        </lightning-layout-item>
+                                                        <lightning-layout-item size="3" class="progress-ring-container"
+                                                            data-name="methods">
+                                                            <c-progress-ring percentage={Q4Val} title="Q4"
+                                                                onclick={handleQuarterClick}></c-progress-ring>
+                                                            <div class="slds-m-top_medium slds-align_absolute-center"
+                                                                if:true={V2MOMRec.data}>
+                                                                <lightning-button label="Check In" title="Check In Q4"
+                                                                    onclick={handleCheck} name="Q4CheckIn"
+                                                                    variant="brand" value="Q4"
+                                                                    if:false={V2MOMRec.data.fields.Q4_Check_In__c.value}
+                                                                    ></lightning-button>
+                                                                <lightning-button-group
+                                                                    if:true={V2MOMRec.data.fields.Q4_Check_In__c.value}>
+                                                                    <lightning-button label="Checked In" disabled>
+                                                                    </lightning-button>
+                                                                    <lightning-button-menu
+                                                                        if:true={V2MOMRec.data.fields.Q4_Check_In__c.value}>
+                                                                        <lightning-menu-item value="Q4"
+                                                                            label="Undo Check In"
+                                                                            onclick={handleUncheck}>
+                                                                        </lightning-menu-item>
+                                                                    </lightning-button-menu>
+                                                                </lightning-button-group>
+                                                            </div>
+                                                        </lightning-layout-item>
+                                                    </lightning-layout>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                        </lightning-layout-item>
+                                        <div class='slds-text-heading_medium slds-card__header-title slds-align_absolute-center slds-p-top_medium'
+                                            style='font-weight:lighter' if:false={isNew}>Click on the quarter to view
+                                            measures and methods</div>
+                                        <lightning-layout-item size="12">
+                                            <lightning-layout class="slds-wrap slds-p-around_x-small"
+                                                multiple-rows="true">
+                                                <lightning-layout-item size="12">
+                                                    <lightning-layout class="slds-wrap" multiple-rows="true">
+                                                        <lightning-layout-item size="12">
+                                                            <lightning-layout class="slds-wrap" multiple-rows="true">
+                                                                <lightning-layout-item size="12">
+                                                                    <c-values-and-vision v2mom={V2MOMRec}
+                                                                        user-rec={userRec}
+                                                                        oncreatev2mom={handlefychange}
+                                                                        onvisionupdated={refreshV2MOMrec}
+                                                                        financial-year={currentFY} is-new={isNew}
+                                                                        can-user-edit={otherUserEdit}>
+                                                                    </c-values-and-vision>
+                                                                </lightning-layout-item>
+                                                            </lightning-layout>
+                                                        </lightning-layout-item>
+                                                    </lightning-layout>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                </lightning-layout-item>
+                            </template>
+
+                            <template if:false={isUserRecord}>
+                                <lightning-layout-item size="3" if:false={isNew} padding="around-small"
+                                    class="slds-scrollable_y" style="height: 90%;">
+                                    <c-recent-activities if:true={currentV2MOMId} v2mom-id={currentV2MOMId}>
+                                    </c-recent-activities>
+                                </lightning-layout-item>
+                            </template>
+
+                            <lightning-layout-item size="3" if:true={isNew} padding="around-small" style="height: 90%;">
+                                <c-video-card></c-video-card>
+                            </lightning-layout-item>
+
+                        </lightning-layout>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+
+            <template if:true={showMethods}>
+                <div class="slds-p-around_medium">
+                    <c-method-container myv2mom-id={currentV2MOMId} applicable-quarter={selectedQuarter}
+                        fyyear={currentV2MOMYear} user-id={userId} onnavigatetomeasures={handleMethodClick}
+                        can-user-edit={otherUserEdit}></c-method-container>
+                </div>
+            </template>
+
+            <template if:true={showMeasures}>
+                <div class="slds-p-around_medium">
+                    <c-measure-container method-id={selectedMethodId} applicable-quarter={selectedQuarter}
+                        is-manager={isManager} is-assigned-measure={isAssignedMeasure} team-member-list={teamMemberList}
+                        can-user-edit={otherUserEdit} onrefreshmethodcontainer={handleMethodContainerRefresh}>
+                    </c-measure-container>
+                </div>
+            </template>
+
+            <template if:true={showConfirmationPopUp}>
+                <c-delete-confirmation popup-header={checkinPopupHeader} popup-body={checkinPopupBody}
+                    confirm-button-label="Confirm" confirm-button-icon="utility:check" onclosemodal={closeCheckinPopup}
+                    onconfirmdelete={handleCheckinConfirmation}></c-delete-confirmation>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </template>
+
+        </template>
+    </div>
+</template>

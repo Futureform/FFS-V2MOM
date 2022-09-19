@@ -1,0 +1,25 @@
+.popup-text{
+    text-align: center;
+    font-size: 14px;
+}
+
+.measure-name{
+    display: flex;
+    text-align: center;
+    padding-top: 1.5%;
+    vertical-align: middle;
+    align-items:center;
+    justify-content:center;
+}
+
+.hideSplit{
+    display:none;
+}
+
+.showSplit{
+    display:block;
+}
+
+.modalContainer{
+    max-width:unset !important;
+}

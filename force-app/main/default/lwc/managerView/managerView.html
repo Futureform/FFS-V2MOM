@@ -1,0 +1,34 @@
+<template>
+
+
+    <div class="mg-root">
+        <template if:true={checkgridData} for:each={gridData} for:item="item">
+            <div key={item.Id} class="mg-maincontainer">
+                <div class="mg-childcontainer">
+                    <div class="mg-col1">
+                        <div class="mg-heading-name"><a href={item.link}>{item.User__r.Name}</a></div>
+                        <div class="mg-title">{item.User__r.Title}</div>
+                        <div class="mg-lastdate">Last update on {item.modifiedDate}</div>
+                    </div>
+                    <div class="mg-col2">
+                        <div>
+                            <c-progress-ring percentage={item.Q1_Progress__c} title="Q1"></c-progress-ring>
+                        </div>
+                        <div>
+                            <c-progress-ring percentage={item.Q2_Progress__c} title="Q2"></c-progress-ring>
+                        </div>
+                        <div>
+                            <c-progress-ring percentage={item.Q3_Progress__c} title="Q3"></c-progress-ring>
+                        </div>
+                        <div>
+                            <c-progress-ring percentage={item.Q4_Progress__c} title="Q4"></c-progress-ring>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <div if:false={checkgridData}>
+            <c-illustration heading="No Reportees Found" image-name="custom:fishing_deals"></c-illustration>
+        </div>
+    </div>
+</template>

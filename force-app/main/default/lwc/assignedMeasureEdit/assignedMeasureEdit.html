@@ -1,0 +1,92 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+        aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open flex">
+        <div class="slds-modal__container modalContainer">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Edit - {name}
+                </h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_small" id="modal-content-id-1">
+                <!-- Edit Measure Block Start-->
+                <div>
+                    <lightning-layout horizontal-align="space" multiple-rows="true">
+                        <lightning-layout-item class="slds-p-around_small" size="5">
+                            <lightning-input name="name" label="Name" type="text" value={name} data-field="name" onchange={handleNameChange} max-length="80" read-only="true"></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item class="slds-p-around_small" size="7">
+                            <lightning-textarea name="comment" label="Comment" max-length="1000" value={comment} data-field="comment" onchange={handleCommentChange} read-only="true" class="textarea"></lightning-textarea>   
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                    <lightning-layout horizontal-align="space" multiple-rows="true" class="slds-box" style="padding:unset;padding-bottom: 2%;">
+                        <lightning-layout-item class="slds-p-around_small" size="12">
+                            <lightning-layout horizontal-align="spread" multiple-rows="true">
+                                <lightning-layout-item class="slds-p-horizontal_small" size=6>
+                                    <lightning-input data-field="targetvalue" type="number" label="Target Value"
+                                        value={targetValue} read-only="true" required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                                <lightning-layout-item class="slds-p-horizontal_small" size=6>
+                                    <lightning-input data-field="currentvalue" type="number" label="Current Value"
+                                        value={currentValue} onchange={validateData} required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                            </lightning-layout>
+
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                    <lightning-layout horizontal-align="spread" multiple-rows="true">
+                        <lightning-layout-item class="slds-p-around_small" size="7">
+                            <legend class="slds-form-element__legend slds-form-element__label">
+                                Priority
+                            </legend>
+                            <lightning-layout horizontal-align="spread" class="slds-form-element__control">
+                                <lightning-layout-item class="slds-radio">
+                                    <input id="priority1" type="radio" value="High" name="priority" checked={highPriority} disabled/>
+                                    <label class="slds-radio__label" for="priority1">
+                                        <span class="slds-radio_faux"></span>
+                                        <span class="slds-form-element__label">High</span>
+                                    </label>
+                                </lightning-layout-item>
+                                <lightning-layout-item class="slds-radio">
+                                    <input id="priority2" type="radio" value="Medium" name="priority" checked={mediumPriority} disabled/>
+                                    <label class="slds-radio__label" for="priority2">
+                                        <span class="slds-radio_faux"></span>
+                                        <span class="slds-form-element__label">Medium</span>
+                                    </label>
+                                </lightning-layout-item>
+                                <lightning-layout-item class="slds-radio">
+                                    <input id="priority3" type="radio" value="Low" name="priority" checked={lowPriority} disabled/>
+                                    <label class="slds-radio__label" for="priority3">
+                                        <span class="slds-radio_faux"></span>
+                                        <span class="slds-form-element__label">Low</span>
+                                    </label>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+                        <lightning-layout-item class="slds-p-around_small" size="5">
+                        </lightning-layout-item>
+                        <lightning-layout-item class="slds-p-around_small" size="12">
+                            <lightning-textarea name="obstacles" label="Obstacles" max-length="1000" value={obstacles} data-field="obstacles" read-only="true" class="textarea"></lightning-textarea>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+                <!-- Edit Measure End-->
+            </div>
+
+            <footer class="slds-modal__footer">
+                <lightning-button variant="base" onclick={refreshMethod} title="Refresh" label="Refresh"
+                    icon-name="utility:refresh" class="slds-m-left_x-small" if:false={addmeasure}></lightning-button>
+                <lightning-button variant="base" onclick={closeModal} title="Cancel" label="Cancel"
+                    icon-name="utility:close" class="slds-m-left_x-small"></lightning-button>
+                <lightning-button variant="base" onclick={updateMeasureTeamMember} title="Save" label="Save"
+                    icon-name="utility:save" class="slds-m-left_x-small" disabled={disableSave}></lightning-button>
+            </footer>
+        </div>
+    </section>
+</template>

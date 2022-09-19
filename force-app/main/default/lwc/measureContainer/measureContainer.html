@@ -1,0 +1,55 @@
+<template>
+    <article class="slds-card measure-container" style="border:hidden;">
+        <div class="slds-card__header slds-grid">
+          <header class="slds-media slds-media_center slds-has-flexi-truncate">
+            <div class="slds-media__body">
+              <h2 class="slds-card__header-title">
+                <p class="slds-card__header-link slds-truncate card-header" title="MEASURES AND THEIR OBSTACLES">
+                  <span>MEASURES AND THEIR OBSTACLES</span>
+                </p>
+              </h2>
+            </div>
+            <div class="slds-no-flex">
+              <template if:false={isAssignedMeasure}>
+               
+                <div if:true={canUserEdit}>
+                  <lightning-icon if:false={isManager} class="navElement" onclick={createMeasure} icon-name="action:new" alternative-text="New Measure" size="small" title="New Measure"></lightning-icon>
+                  <lightning-button-menu label="New&nbsp;" class="button-class" menu-alignment="right" alternative-text="New" if:true={isManager} >
+                    <lightning-menu-item label="Individual Measure" onclick={createMeasure} prefix-icon-name="utility:adduser"></lightning-menu-item>
+                    <lightning-menu-item label="Team Measure" onclick={createTeamMeasure} prefix-icon-name="action:join_group"></lightning-menu-item>
+                  </lightning-button-menu>
+              </div>
+              </template>
+            </div>
+          </header>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <lightning-layout multiple-rows>
+                <template for:each={measures.data} for:item="measure" if:true={measures.data}>
+                    <lightning-layout-item size="3" key={measure.Id} padding="around-medium">
+                        <c-measure-card measure-id={measure.Id} method-id={methodId} mandata={mandata} quarter={applicableQuarter} onrefreshmeasures={handleRefresh} isreadonly-user={isreadonlyUser} can-user-edit={canUserEdit}></c-measure-card>
+                    </lightning-layout-item>
+                </template>
+                <template for:each={teamMemberList} for:item="teamMember" if:true={isAssignedMeasure}>
+                  <lightning-layout-item size="3" key={teamMember.Id} padding="around-medium">
+                    <c-assigned-measure-card measure-team-member-id={teamMember.Id} quarter={applicableQuarter} isreadonly-user={isreadonlyUser}></c-assigned-measure-card>
+                  </lightning-layout-item>
+                </template>
+                
+                <template if:true={showIllustration}>
+                  <div class="slds-align_absolute-center slds-p-around_xx-large">
+                    <c-illustration heading="Lets start creating a Measure by clicking on +" image-name="custom:fishing_deals"></c-illustration>
+                  </div>
+              </template>
+            </lightning-layout>
+        </div>
+      </article>
+      <template if:true={showCreate}>
+        <c-measure-edit method-id={methodId} measureheader="Create Measure" onclosemodal={closeCreateModal} addmeasure=true onrefreshmeasures={handleRefresh} applicablequarter={applicableQuarter}></c-measure-edit>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+      </template>
+      <template if:true={showTeamMeasureCreate}>
+        <c-assign-measure method-id={methodId} current-quarter={applicableQuarter} onclosemodal={closeCreateModal} onrefreshmeasures={handleRefresh}></c-assign-measure>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+      </template>
+</template>

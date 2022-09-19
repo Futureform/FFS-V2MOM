@@ -1,0 +1,71 @@
+<template>
+    <div class="flip-card slds-card">
+        <article data-id="box" class="flip-card-inner" style={boxStyle}>
+            <div class="flip-card-front">
+                <div class="slds-card__header slds-grid" style="height:10%">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                        </div>
+                        <div class="slds-no-flex">
+                            <lightning-badge label="Assigned Measure"></lightning-badge>
+                        </div>
+                    </header>
+                </div>
+                <div style="height:90%" class="slds-card__body slds-card__body_inner">
+                    <lightning-layout vertical-align="center" multiple-rows style="height:100%">
+                        <lightning-layout-item flexibility="auto" size="12" padding="around-small" style="height:60%;">
+                            <div class="slds-align_absolute-center" align="center" style="height:100%;width:60%">
+                                <c-progress-ring percentage={quarterProgress} title=""> </c-progress-ring>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" style="height:20%;">
+                            <p class="slds-align_absolute-center slds-card__header-link slds-line-clamp_x-small method-name"
+                                style={methodName}>Team Measures</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" style="height:5%;">
+                            <div class="slds-align_absolute-center"
+                                style="border-top: 1px solid #868686;width:85%;margin-top:3%;"></div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" style="height:15%;">
+
+                            <div class="slds-align_absolute-center" style={methodDate}>
+                                <div style="font-weight:bold;">{measuresLength}&nbsp;</div>
+                                Measure(s) and their Obstacles
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+            </div>
+
+
+            <div class="flip-card-back slds-p-around_xx-small">
+                <div class="slds-card__header slds-grid" style="height:10%">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                        </div>
+                        <div class="slds-no-flex">
+                            <lightning-badge label="Assigned Measure"></lightning-badge>
+                        </div>
+                    </header>
+                </div>
+
+
+                <div class="slds-card__body slds-card__body_inner" style="height:90%" onclick={showAssignedMeasures}>
+                    <lightning-layout multiple-rows style="overflow-y:auto;height:100%">
+                        <template for:each={teamMemberList} for:item="measure">
+                            <lightning-layout-item size="4" key={measure.Id} class="slds-p-around_small">
+                                <div style='display:flex;align-items:center;flex-direction:column;'>
+                                    <c-progress-ring percentage={measure.currentQuarterProgress} title=""> </c-progress-ring>
+                                    <div class="slds-m-top_x-small">
+                                        <p class="paragraph">{measure.Measure__r.Name}</p>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+                        </template>
+                    </lightning-layout>
+                </div>
+            </div>
+        </article>
+    </div>
+    
+</template>

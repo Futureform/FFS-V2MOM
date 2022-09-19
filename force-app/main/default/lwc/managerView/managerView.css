@@ -1,0 +1,52 @@
+.mg-root{
+    background-color: white;
+    padding: 20px;
+}
+.mg-maincontainer{
+    padding: 20px;
+    height: 150px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    color:#404040;
+    border: 1px solid rgb(221, 219, 218);
+    margin:10px;
+}
+
+.mg-childcontainer{
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.mg-col1{
+    padding-left:20px;
+    align-items: center;
+    width: 30%;
+}
+
+.mg-heading-name{
+    text-transform: uppercase;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 2px;
+}
+
+.mg-title{
+    font-size: 16px;
+    margin-top: 2px;
+}
+
+.mg-lastdate{
+    font-size: 14px;
+    margin-top:20px;
+    color:#8B8B8B;
+}
+
+.mg-col2{
+    height: 150px;
+    display: flex;
+    width: 70%;
+    justify-content: space-between;
+    padding: 15px;
+}

@@ -1,0 +1,9 @@
+.rightalign {
+    text-align: right !important;
+    color: white;
+    font-style: italic;
+}
+
+.hideDiv {
+    display: none;
+}

@@ -1,0 +1,150 @@
+<template>
+    <div class="slds-p-around_x-small">
+        <article class="slds-card">
+            <div class="slds-card__body slds-p-around_xx-small">
+                <lightning-layout class="slds-wrap" multiple-rows="true" vertical-align="center">
+                    <template if:false={_isUserRecordView}>
+                        <lightning-layout-item size="7">
+                            <article class="slds-tile slds-media slds-p-left_small">
+                                <div class="slds-media__body slds-p-left_small" style={_bannerStyle}>
+                                    <h3 class="slds-text-heading_large slds-truncate">
+                                        <p class="headerClass blue">{fyyear} V2MOM</p>
+                                    </h3>
+                                    <div class="slds-tile__detail">
+                                        <div class="slds-tile__detail">
+                                            <ul class="slds-list_horizontal slds-has-dividers_left">
+                                                <template if:false={isNew}>
+                                                    <li class="slds-item blue" if:true={showMyTeamButton}>
+                                                        <lightning-radio-group variant="label-hidden"
+                                                            class="button-class" options={managerOptions} value={view}
+                                                            onchange={handleViewChange} type="button">
+                                                        </lightning-radio-group>
+                                                    </li>
+                                                    <li class="slds-item blue" if:true={status}>{status}</li>
+                                                    <li class="slds-item" if:true={isPublished}>
+                                                        <lightning-formatted-date-time value={publishedDate}
+                                                            year="numeric" month="long" day="2-digit">
+                                                        </lightning-formatted-date-time>
+                                                    </li>
+                                                    <template if:true={isLoggedInUserV2MOM}>
+                                                        <li class="slds-item" if:false={isPublished}>
+                                                            <lightning-button variant="brand-outline" label="Publish"
+                                                                title="Publish" onclick={verifyPublish}
+                                                                class="slds-m-left_x-small button-class">
+                                                            </lightning-button>
+                                                        </li>
+                                                    </template>
+                                                </template>
+                                                <template if:true={isNew}>
+                                                    <li class="slds-item blue">To Be Created</li>
+                                                </template>
+                                                <li class="slds-item" style="width:10em;">
+                                                    <lightning-combobox name="progress" label="" variant="label-hidden"
+                                                        value={selectedYear} options={options} onchange={handleChange}>
+                                                    </lightning-combobox>
+                                                </li>
+                                                <template if:true={isLoggedInUserV2MOM}>
+                                                    <li class="slds-item" if:true={showShareasPDFButton}>
+                                                        <lightning-button variant="brand-outline" label="Print as PDF"
+                                                            title="Print as PDF" onclick={openPDF}  icon-name="utility:download"
+                                                            class="slds-m-left_x-small button-class"></lightning-button>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </article>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item size="5">
+                            <article class="slds-tile slds-media slds-p-right_large slds-float_right"
+                                if:true={userRec.data}>
+                                <div class="slds-media__body slds-p-left_small slds-text-align--right "
+                                    style="margin-right: 1em;">
+                                    <h3 class="slds-text-heading_large slds-truncate" title={name}>
+                                        <a href={userUrl} class="headerClass">{name}</a>
+                                    </h3>
+                                    <div class="slds-tile__detail">
+                                        <ul>
+                                            <li class="slds-item title">{title}</li>
+                                            <li class="slds-item" style="margin-top:5%" if:true={managerRec.data}>
+                                                <a href={managerUrl} class="slds-text-heading_small blue">{manager}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <lightning-avatar size="large" variant="circle" src={photo}
+                                    fallback-icon-name="standard:person_account" alternative-text={name}
+                                    style="width: auto;height: 100%;"></lightning-avatar>
+                            </article>
+                        </lightning-layout-item>
+                    </template>
+                    <template if:true={_isUserRecordView}>
+                        <lightning-layout-item size="12">
+                            <article class="slds-tile slds-media slds-p-left_small">
+                                <div class="slds-media__body slds-p-left_small" style={_bannerStyle}>
+                                    <h3 class="slds-text-heading_large slds-truncate">
+                                        <p class="headerClass blue">{fyyear} V2MOM</p>
+                                    </h3>
+                                    <div class="slds-tile__detail">
+                                        <div class="slds-tile__detail">
+                                            <ul class="slds-list_horizontal slds-has-dividers_left">
+                                                <template if:false={isNew}>
+                                                    <li class="slds-item blue" if:true={showMyTeamButton}>
+                                                        <lightning-radio-group variant="label-hidden"
+                                                            class="button-class" options={managerOptions} value={view}
+                                                            onchange={handleViewChange} type="button">
+                                                        </lightning-radio-group>
+                                                    </li>
+                                                    <li class="slds-item blue" if:true={status}>{status}</li>
+                                                    <li class="slds-item" if:true={isPublished}>
+                                                        <lightning-formatted-date-time value={publishedDate}
+                                                            year="numeric" month="long" day="2-digit">
+                                                        </lightning-formatted-date-time>
+                                                    </li>
+                                                    <template if:true={isLoggedInUserV2MOM}>
+                                                        <li class="slds-item" if:false={isPublished}>
+                                                            <lightning-button variant="brand-outline" label="Publish"
+                                                                title="Publish" onclick={verifyPublish}
+                                                                class="slds-m-left_x-small button-class">
+                                                            </lightning-button>
+                                                        </li>
+                                                    </template>
+                                                </template>
+                                                <template if:true={isNew}>
+                                                    <li class="slds-item blue">To Be Created</li>
+                                                </template>
+                                                <li class="slds-item" style="width:10em;">
+                                                    <lightning-combobox name="progress" label="" variant="label-hidden"
+                                                        value={selectedYear} options={options} onchange={handleChange}>
+                                                    </lightning-combobox>
+                                                </li>
+                                                <template if:true={isLoggedInUserV2MOM}>
+                                                    <li class="slds-item" if:true={showShareasPDFButton}>
+                                                        <lightning-button variant="brand-outline" icon-name="utility:download" label="Print as PDF"
+                                                            title="Print as PDF" onclick={openPDF}
+                                                            class="slds-m-left_x-small button-class"></lightning-button>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        </lightning-layout-item>
+                    </template>
+                </lightning-layout>
+            </div>
+        </article>
+    </div>
+
+    <template if:true={showConfirmationPopUp}>
+        <c-delete-confirmation popup-header="Publish V2MOM" popup-body="Are you sure you want to publish your V2MOM?"
+            confirm-button-label="Confirm" confirm-button-icon="utility:check" onclosemodal={closeConfirmationModal}
+            onconfirmdelete={publishV2MOM}></c-delete-confirmation>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+</template>

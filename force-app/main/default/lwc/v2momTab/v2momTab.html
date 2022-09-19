@@ -1,0 +1,12 @@
+<template>
+    <template if:false={showSpinner}>
+        <div style="height:100vh;background: #f7f7f7;">
+            <c-v2mom-card user-id={userId} v2mom-id={v2momId} onfychange={handlefychange} is-new={isNew}></c-v2mom-card>
+        </div>
+    </template>
+    <template if:true={showSpinner}>
+        <div style="height:100vh;">
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+        </div>
+    </template>
+</template>

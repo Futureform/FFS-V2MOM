@@ -1,0 +1,5 @@
+<template>
+    <div if:true={v2mom.data} style="height:90vh;">
+        <c-v2mom-card user-id={v2mom.data.fields.User__c.value} v2mom-id={recordId} onfychange={handlefychange}></c-v2mom-card>
+    </div>
+</template>

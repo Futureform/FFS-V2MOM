@@ -1,0 +1,114 @@
+<template>
+    <template if:true={obstacle.data}>
+        <template if:true={isEdit}>
+            <article class="slds-card card">
+                <div class="slds-card__header slds-grid">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                            <h2 class="slds-card__header-title">
+                                Edit Obstacle
+                            </h2>
+                        </div>
+                        <div class="slds-no-flex">
+                            <lightning-button-icon class="slds-m-left" icon-name="utility:close" variant="bare"
+                                alternative-text="close" title="Close" slot="actions" onclick={closeObstacle}>
+                            </lightning-button-icon>
+                            <lightning-button-icon class="slds-m-left_xx-small" icon-name="utility:save" variant="bare"
+                                alternative-text="new" title="Save" slot="actions" onclick={saveObstacle}
+                                disabled={disableSave}></lightning-button-icon>
+                        </div>
+                    </header>
+                </div>
+                <div class="slds-card__body slds-card__body_inner slds-p-bottom_small">
+                    <lightning-input type="text" label="Name" data-field="name" value={name} maxlength="80"
+                        onkeyup={calculateLengthName}></lightning-input>
+                    <div class="slds-text-align_right slds-text-body_small">{nameLength} characters left</div>
+                    <lightning-textarea type="text" label="Description" data-field="description" value={description}
+                        maxlength="1000" onkeyup={calculateLengthDescription}></lightning-textarea>
+                    <div class="slds-text-align_right slds-text-body_small">{descLength} characters left</div>
+                </div>
+            </article>
+        </template>
+        <template if:false={isEdit}>
+            <article class="slds-card card">
+                <template if:true={description}>
+                    <div class="slds-card__header slds-grid">
+                        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                            <div class="slds-media__body">
+                                <h2 class="slds-card__header-title">
+                                    {name}
+                                </h2>
+                            </div>
+                            <div class="slds-no-flex">
+                                <lightning-button-icon class="slds-m-left" icon-name="utility:delete" variant="bare"
+                                    alternative-text="delete" title="Delete" slot="actions" onclick={confirmDeletion}>
+                                </lightning-button-icon>
+                                <lightning-button-icon class="slds-m-left_xx-small" icon-name="utility:edit"
+                                    variant="bare" alternative-text="edit" title="Edit" slot="actions"
+                                    onclick={editObstacle}>
+                                </lightning-button-icon>
+                            </div>
+                        </header>
+                    </div>
+                </template>
+                <template if:false={description}>
+                    <div class="slds-card__header slds-grid slds-p-bottom_small">
+                        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                            <div class="slds-media__body">
+                                <h2 class="slds-card__header-title">
+                                    {name}
+                                </h2>
+                            </div>
+                            <div class="slds-no-flex">
+                                <lightning-button-icon class="slds-m-left" icon-name="utility:delete" variant="bare"
+                                    alternative-text="delete" title="Delete" slot="actions" onclick={confirmDeletion}>
+                                </lightning-button-icon>
+                                <lightning-button-icon class="slds-m-left_xx-small" icon-name="utility:edit"
+                                    variant="bare" alternative-text="edit" title="Edit" slot="actions"
+                                    onclick={editObstacle}>
+                                </lightning-button-icon>
+                            </div>
+                        </header>
+                    </div>
+                </template>
+                <div class="slds-card__body slds-card__body_inner slds-p-bottom_small">
+                    {description}
+                </div>
+            </article>
+        </template>
+    </template>
+    <template if:false={obstacle.data}>
+        <article class="slds-card card">
+            <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div class="slds-media__body">
+                        <h2 class="slds-card__header-title">
+                            New Obstacle
+                        </h2>
+                    </div>
+                    <div class="slds-no-flex">
+                        <lightning-button-icon class="slds-m-left" icon-name="utility:close" variant="bare"
+                            alternative-text="close" title="Close" slot="actions" onclick={hideNewObstacle}>
+                        </lightning-button-icon>
+                        <lightning-button-icon class="slds-m-left_xx-small" icon-name="utility:save" variant="bare"
+                            alternative-text="new" title="Save" slot="actions" onclick={createObstacle}
+                            disabled={disableSave}></lightning-button-icon>
+                    </div>
+                </header>
+            </div>
+            <div class="slds-card__body slds-card__body_inner slds-p-bottom_small">
+                <lightning-input type="text" label="Name" data-field="newname" maxlength="80"
+                    onkeyup={calculateNewLengthName}></lightning-input>
+                <div class="slds-text-align_right slds-text-body_small">{nameLength} characters left</div>
+                <lightning-textarea type="text" label="Description" data-field="newdescription" maxlength="1000"
+                    onkeyup={calculateNewLengthDescription}></lightning-textarea>
+                <div class="slds-text-align_right slds-text-body_small">{descLength} characters left</div>
+            </div>
+        </article>
+    </template>
+    <template if:true={showDeletePopup}>
+        <c-delete-confirmation popup-header="Delete Obstacle" popup-body={deletePopupBody}
+            onclosemodal={closeDeletePopup} onconfirmdelete={deleteObstacle}></c-delete-confirmation>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

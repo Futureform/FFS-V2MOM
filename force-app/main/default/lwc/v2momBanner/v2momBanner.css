@@ -1,0 +1,25 @@
+.avatar {
+    height: 65px;
+    width: 65px;
+    border-radius: 90%;
+}
+
+.headerClass {
+    color:black;
+    font-weight: bold;
+    margin-bottom:5px;
+}
+
+.blue {
+    color: #0ba6e3 !important;
+}
+
+.slds-card__header {
+    display: none!important;
+}
+
+.button-class{
+    --sds-c-button-text-color : #0ba6e3;
+    --sds-c-button-outline-brand-color-border : #0ba6e3;
+    --sds-c-button-brand-color-background : #0ba6e3;
+}

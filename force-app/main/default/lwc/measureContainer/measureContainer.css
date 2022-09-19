@@ -1,0 +1,25 @@
+.measure-container{
+    background-color:#f7f7f7;
+}
+
+.card-header{
+    color: #868686;
+    font-size: 1.5em;
+}
+
+.square-box {
+    background: #000;
+    width: 30vw;
+    height: 30vw;
+}
+
+.button-class {
+    --sds-c-button-brand-color-background : #0ba6e3;
+}
+
+.button-class .slds-button{
+    color : #0ba6e3;
+}
+.navElement{
+    cursor: pointer;
+  }
