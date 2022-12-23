@@ -12,7 +12,7 @@ public with sharing class AssignMeasure {
             String measureValue = '\''+MeasureId+'\'';
             
             String query = 'Select Id, '+quarterName+', '+quarterField+', '+quarterValue+', '+progressField+', Team_Member__r.Name, Team_Member__r.Id FROM Measure_Team_Member__c where Measure__c = '+measureValue+' WITH SECURITY_ENFORCED';
-            System.debug(Database.query(query));
+            
             return Database.query(query);
         }catch(exception e){
             throw new AuraHandledException(e.getMessage());
@@ -30,7 +30,7 @@ public with sharing class AssignMeasure {
         String quarterPriority = ''+quarter+'_Priority__c';
         String measureIdString = '\''+measureId+'\'';
         String query = 'SELECT Id,Obstacles__c,Method__c,'+quarterPriority+' FROM Measure__c WHERE Id ='+measureIdString+' WITH SECURITY_ENFORCED' ;
-        System.debug(query);
+        
         return Database.query(query);
     }
 }

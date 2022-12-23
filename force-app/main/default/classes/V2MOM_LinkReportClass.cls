@@ -29,7 +29,7 @@ public with sharing class V2MOM_LinkReportClass {
 	    	if ( String.isNotBlank( err.getMessage() ) && err.getMessage().contains( 'error:' ) ) {
                 throw new AuraHandledException(err.getMessage().split('error:')[1].split(':')[0] + '.');
             } else {
-                System.debug(err);
+                
                 throw new AuraHandledException(err.getMessage());
             }
 	    }
@@ -61,7 +61,7 @@ public with sharing class V2MOM_LinkReportClass {
                     }
                 }
                 aggrList.add(new RecordsData('Record Count','Record Count'));
-                System.debug(aggrList);
+                
             }
         }
         if(aggrList.size()>0 && aggrList != null)
@@ -121,7 +121,7 @@ public with sharing class V2MOM_LinkReportClass {
                 for(integer k=0;k<totalAggregates;k++){
                     if(rm.getAggregates()[k].contains('!')){
                         String[] aggr = rm.getAggregates()[k].split('!');
-                        System.debug(aggr[1]);
+                        
                         if(aggr[1].equals(aggName)){
                             Reports.SummaryValue sumVal = factDetails.getAggregates()[k];
                             Double val = Double.valueOf((sumVal.getValue()));

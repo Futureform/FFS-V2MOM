@@ -135,17 +135,17 @@ public with sharing class V2MOM_RootComponentController {
         for(String key : measureFieldsMap.keySet()){
             fieldAPIMap.put('Measure__c.'+String.valueOf(v2momFieldsMap.get(key)),String.valueOf(measureFieldsMap.get(key).getDescribe().getLabel()));
         }
-        system.debug(fieldAPIMap);
+        
         return fieldAPIMap;
     }
 
     @AuraEnabled(cacheable=true)
     public static Boolean checkIsManager(String userId){
-        system.debug('loggedinUser'+UserInfo.getUserId()) ;
+        
         List<User> listUsers = [SELECT Id FROM User WHERE ManagerId=:userId WITH SECURITY_ENFORCED LIMIT 1];
-        system.debug('listUsers'+listUsers);
+        
         if(!listUsers.isEmpty()){
-            system.debug('InsideIf');
+            
             return true;
         } 
         return false;
@@ -170,13 +170,13 @@ public with sharing class V2MOM_RootComponentController {
 
     @AuraEnabled
     public static List<Measure_Team_Member__c> getAssignedMeasures(String userId,String fyyear,String quarter){
-        system.debug('userId'+userId);
+        
         List<Measure_Team_Member__c> teamMembers = new List<Measure_Team_Member__c>();
         String quarterField = quarter+'__c';
         String query = 'SELECT Id,CreatedById,Measure__r.Name,Team_Member__c,'+''+quarter+'_Progress__c FROM Measure_Team_Member__c WHERE Team_Member__c =:userId AND Measure__r.Method__r.V2MOM__r.FY_Year__c =:fyyear AND '+quarterField+'=true AND CreatedById != :userId WITH SECURITY_ENFORCED ORDER BY CreatedDate Desc';
         teamMembers = Database.query(query);
-        system.debug('measuresList');
-        System.debug(Database.query(query));
+        
+        
         return teamMembers;
     }
 
@@ -283,15 +283,15 @@ public with sharing class V2MOM_RootComponentController {
 
     @AuraEnabled(cacheable=true)
     public static V2MOM__c getV2MOMMethods(String v2momId,String applicableQuarter){
-        System.debug(v2momId);
+        
         String quarter = ''+applicableQuarter+'__c';
         String query = 'SELECT Id, Name, Status__c, Published_Date__c, FY_Year__c,';
         query += '(SELECT Id, Name, Order__c, '+quarter+' FROM Methods__r WHERE '+quarter +'=true ORDER BY CreatedDate DESC),';
         query += '(SELECT Id FROM Obstacles__r)';
         query += ' FROM V2MOM__c WHERE Id=:v2momId WITH SECURITY_ENFORCED';
         List<V2MOM__c> v2momList = new List<V2MOM__c>();
-        system.debug('query'+query);
-        system.debug(Database.query(query));
+        
+        
         v2momList = Database.query(query);
         
         if(v2momList.size()>0){
