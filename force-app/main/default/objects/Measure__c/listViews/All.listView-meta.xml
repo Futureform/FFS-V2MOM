@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>Q1_Target__c</columns>
+    <columns>Q1_Value__c</columns>
+    <columns>Q2_Target__c</columns>
+    <columns>Q2_Value__c</columns>
+    <columns>Q3_Target__c</columns>
+    <columns>Q3_Value__c</columns>
+    <columns>Q4_Target__c</columns>
+    <columns>Q4_Value__c</columns>
+    <columns>Q1_Status__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>All Records</label>
+</ListView>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Q4_Progress__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <formula>IF(Is_Assigned_Measure__c, Q4_Team_Value__c/Q4_Team_Target__c,
+(CASE(TEXT(Q4_Type__c),&apos;Completion&apos;,  IF(OR( ISNULL(Q4_Target__c) ,Q4_Target__c == 0) , 0, Q4_Value__c/Q4_Target__c) ,
+&apos;Progress&apos;,(CASE(TEXT(Q4_Status__c), &apos;Not Started&apos;, 0, &apos;Canceled&apos;, 0 ,&apos;Behind Schedule&apos;, 0.25 ,&apos;On Track&apos;, 0.50 ,&apos;Completed&apos;, 1,0)),0)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Q4 Progress</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>
