@@ -1,0 +1,51 @@
+<template>
+
+  <article class="slds-card method-container" style="border:hidden;">
+    <div class="slds-card__header slds-grid">
+      <header class="slds-media slds-media_center slds-has-flexi-truncate">
+        <div class="slds-media__body">
+          <h2 class="slds-card__header-title">
+            <p class="slds-card__header-link slds-truncate card-header" title="METHODS">
+              <span>METHODS</span>
+            </p>
+          </h2>
+          <p style="font-size:14px;">Hover and click on the method card to create a measure.</p>
+        </div>
+        <div class="slds-no-flex">
+          <lightning-icon class="navElement" onclick={addNewMethod} icon-name="action:new" alternative-text="New Method"
+            size="small" title="New Method" if:true={canUserEdit}></lightning-icon>
+        </div>
+      </header>
+    </div>
+    <div class="slds-card__body slds-card__body_inner">
+      <lightning-layout multiple-rows>
+        <template if:true={myv2mom}>
+          <template for:each={myv2mom.V2MOMQ__Methods__r} for:item="method" if:true={myv2mom.V2MOMQ__Methods__r}>
+            <lightning-layout-item size="3" key={method.Id} padding="around-medium" if:true={method.Id}>
+              <c-method-card method-id={method.Id} onrefreshmethods={refreshContainer} quarter={applicableQuarter}
+                can-user-edit={canUserEdit}></c-method-card>
+            </lightning-layout-item>
+          </template>
+          <lightning-layout-item size="3" padding="around-medium" if:true={hasAssignedMeasures}>
+            <c-assigned-measures-method-card team-member-list={assignedMeasuresData} quarter-progress={totalProgress}>
+            </c-assigned-measures-method-card>
+          </lightning-layout-item>
+          <template if:true={showIllustration}>
+            <div class="slds-align_absolute-center slds-p-around_xx-large">
+              <c-illustration heading="Lets start creating a Method by clicking on +" image-name="custom:fishing_deals">
+              </c-illustration>
+            </div>
+          </template>
+
+        </template>
+      </lightning-layout>
+    </div>
+    <template if:true={openMethodModal}>
+      <c-method-edit method-id={methodId} onclosemodal={closeMethodModal} addmethod={isAddMethod}
+        methodheader={methodheaderName} v2momid={myv2mom.Id} applicablequarter={applicableQuarter}
+        onrefreshmethods={refreshContainer}>
+      </c-method-edit>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+  </article>
+</template>

@@ -1,0 +1,57 @@
+.method-container{
+    background-color:#f7f7f7;
+}
+
+.card-header{
+    color: #868686;
+    font-size: 1.5em;
+}
+
+.square-box {
+    background: #000;
+    width: 30vw;
+    height: 30vw;
+}
+.navElement{
+  cursor: pointer;
+}
+
+/*.Testcontainer{
+    position: relative;
+    width: 50%;
+  }
+  .Testoverlay{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #008CBA;
+    overflow: hidden;
+    width: 0;
+    height: 100%;
+    transition: .5s ease;
+  }
+
+  .Testcontainer:hover {
+    width: 100%;
+  }
+  .back {
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+  }
+  .front {
+    display: block;
+    width: 100%;
+    height: auto;
+  }*/
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
