@@ -53,14 +53,14 @@ export default class MethodContainer extends LightningElement {
             console.log('methodContainerDetails1');
             
             this.myv2mom = this.v2momData.data;
-            console.log(JSON.stringify(this.myv2mom.V2MOMQ__Methods__r));
+            console.log(JSON.stringify(this.myv2mom.Methods__r));
         } else if (error) {
             console.log('error->' + JSON.stringify(error));
         } 
     }
 
     get showIllustration(){
-        if(this.hasAssignedMeasures || this.myv2mom.V2MOMQ__Methods__r){
+        if(this.hasAssignedMeasures || this.myv2mom.Methods__r){
             return false;
         }
         return true;
@@ -79,8 +79,8 @@ export default class MethodContainer extends LightningElement {
                 let sum = 0;
                 this.assignedMeasuresData = JSON.parse(JSON.stringify(result));
                 this.assignedMeasuresData.forEach(measure => {
-                    sum += measure['V2MOMQ__'+this.applicableQuarter+'_Progress__c'];
-                    measure.currentQuarterProgress = measure['V2MOMQ__'+this.applicableQuarter+'_Progress__c'];
+                    sum += measure[''+this.applicableQuarter+'_Progress__c'];
+                    measure.currentQuarterProgress = measure[''+this.applicableQuarter+'_Progress__c'];
                 });
                 this.totalProgress = sum/result.length;
             } else {

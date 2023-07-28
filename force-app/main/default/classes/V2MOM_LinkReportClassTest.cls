@@ -1,13 +1,13 @@
 @isTest(SeeAllData=false)
 public class V2MOM_LinkReportClassTest {
     @isTest static void fetchRecordsTestMethod(){
-        V2MOMQ__V2MOM__c myv2mom = V2MOMQ_TestUtil.createV2MOM();
-        V2MOMQ__Method__c method = V2MOMQ_TestUtil.createMethod(myv2mom.Id);
-        V2MOMQ__Measure__c measure = V2MOMQ_TestUtil.createMeasure(method.Id);
+        V2MOM__c myv2mom = V2MOMQ_TestUtil.createV2MOM();
+        Method__c method = V2MOMQ_TestUtil.createMethod(myv2mom.Id);
+        Measure__c measure = V2MOMQ_TestUtil.createMeasure(method.Id);
         
         Test.startTest();
-        List<V2MOM_LinkReportClass.RecordsData> records = V2MOM_LinkReportClass.fetchRecords('V2MOMQ__V2MOM__c', 'V2MOMQ__Status__c', '',myv2mom.Id);
-        List<V2MOM_LinkReportClass.RecordsData> records_1 = V2MOM_LinkReportClass.fetchRecords('V2MOMQ__V2MOM__c', 'Name', 'V2MOM','');
+        List<V2MOM_LinkReportClass.RecordsData> records = V2MOM_LinkReportClass.fetchRecords('V2MOM__c', 'Status__c', '',myv2mom.Id);
+        List<V2MOM_LinkReportClass.RecordsData> records_1 = V2MOM_LinkReportClass.fetchRecords('V2MOM__c', 'Name', 'V2MOM','');
         Test.stopTest();
         
         System.assertEquals(1, records.size());

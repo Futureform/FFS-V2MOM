@@ -22,13 +22,13 @@ public class V2MOMQ_TestUtil {
         return tuser;
     }
     
-    public static V2MOMQ__V2MOM__c createV2MOM(){
-        V2MOMQ__V2MOM__c v2momRecord = new V2MOMQ__V2MOM__c(
+    public static V2MOM__c createV2MOM(){
+        V2MOM__c v2momRecord = new V2MOM__c(
             Name='V2MOMTestRecord',
-            V2MOMQ__FY_Year__c = ''+Date.today().year(),
-            V2MOMQ__Status__c = 'Draft',
-            V2MOMQ__Vision__c = 'Vision',
-            V2MOMQ__Values__c = 'Values'
+            FY_Year__c = ''+Date.today().year(),
+            Status__c = 'Draft',
+            Vision__c = 'Vision',
+            Values__c = 'Values'
             
         );
         
@@ -36,11 +36,11 @@ public class V2MOMQ_TestUtil {
         return v2momRecord;
     }
     
-    public static V2MOMQ__Method__c createMethod(String v2momId){
-        V2MOMQ__Method__c methodRecord = new V2MOMQ__Method__c(
+    public static Method__c createMethod(String v2momId){
+        Method__c methodRecord = new Method__c(
             Name = 'TestMethod1',
-            V2MOMQ__V2MOM__c = v2momId,
-            V2MOMQ__Description__c = 'Description'
+            V2MOM__c = v2momId,
+            Description__c = 'Description'
         );
         
         insert methodRecord;
@@ -48,31 +48,31 @@ public class V2MOMQ_TestUtil {
         return methodRecord;
     }
     
-    public static V2MOMQ__Measure__c createMeasure(String methodId){
-        V2MOMQ__Measure__c measureRecord = new V2MOMQ__Measure__c(
-            V2MOMQ__Method__c = methodId,
+    public static Measure__c createMeasure(String methodId){
+        Measure__c measureRecord = new Measure__c(
+            Method__c = methodId,
             Name= 'TestMeasure',
-            V2MOMQ__Comments__c = 'Comments',
-            V2MOMQ__Description__c = 'Description',
-            V2MOMQ__Obstacles__c = 'Obsctacles');
+            Comments__c = 'Comments',
+            Description__c = 'Description',
+            Obstacles__c = 'Obsctacles');
         
         insert measureRecord;
         
         return measureRecord;
     }
-    public static V2MOMQ__Obstacle__c createObstacle(String v2momId){
-        V2MOMQ__Obstacle__c obstacleRecord = new V2MOMQ__Obstacle__c(
+    public static Obstacle__c createObstacle(String v2momId){
+        Obstacle__c obstacleRecord = new Obstacle__c(
             Name='TestObstacle',
-            V2MOMQ__V2MOM__c = v2momId,
-            V2MOMQ__Description__c = 'Description'
+            V2MOM__c = v2momId,
+            Description__c = 'Description'
         );
         insert obstacleRecord;
         return obstacleRecord;
     }
     
-    public static V2MOMQ__Measure_Team_Member__c createAssignedMeasure(String measureId){
-        V2MOMQ__Measure_Team_Member__c measureRecord = new V2MOMQ__Measure_Team_Member__c(
-            V2MOMQ__Measure__c = measureId
+    public static Measure_Team_Member__c createAssignedMeasure(String measureId){
+        Measure_Team_Member__c measureRecord = new Measure_Team_Member__c(
+            Measure__c = measureId
         );
         insert measureRecord;
         return measureRecord;

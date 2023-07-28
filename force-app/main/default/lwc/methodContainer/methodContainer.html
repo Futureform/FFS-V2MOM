@@ -20,7 +20,7 @@
     <div class="slds-card__body slds-card__body_inner">
       <lightning-layout multiple-rows>
         <template if:true={myv2mom}>
-          <template for:each={myv2mom.V2MOMQ__Methods__r} for:item="method" if:true={myv2mom.V2MOMQ__Methods__r}>
+          <template for:each={myv2mom.Methods__r} for:item="method" if:true={myv2mom.Methods__r}>
             <lightning-layout-item size="3" key={method.Id} padding="around-medium" if:true={method.Id}>
               <c-method-card method-id={method.Id} onrefreshmethods={refreshContainer} quarter={applicableQuarter}
                 can-user-edit={canUserEdit}></c-method-card>

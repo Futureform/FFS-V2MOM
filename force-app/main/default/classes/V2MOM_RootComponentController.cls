@@ -68,7 +68,7 @@ public with sharing class V2MOM_RootComponentController {
 
     @AuraEnabled(cacheable=true)
     public static List<Obstacle__c> getObstacles(String v2momId){
-        return [SELECT Id FROM Obstacle__c WHERE V2MOM__c=:v2momId WITH SECURITY_ENFORCED];
+        return [SELECT Id FROM Obstacle__c WHERE V2MOM__c=:v2momId WITH SYSTEM_MODE];
     }
 
     @AuraEnabled
@@ -76,7 +76,7 @@ public with sharing class V2MOM_RootComponentController {
         if(fyYear==null){
             fyYear = String.valueOf(getCurrentFY());
         }
-        List<V2MOM__c> v2momList= [SELECT Id FROM V2MOM__c WHERE User__c=:userId AND FY_Year__c=:fyYear WITH SECURITY_ENFORCED];
+        List<V2MOM__c> v2momList= [SELECT Id FROM V2MOM__c WHERE User__c=:userId AND FY_Year__c=:fyYear WITH SYSTEM_MODE];
         if(!v2momList.isEmpty()){
             return v2momList[0].Id;
         }
@@ -89,18 +89,18 @@ public with sharing class V2MOM_RootComponentController {
         Map<String,String> fieldApiMap = getFieldApiMap();
         List<ChangeHistory> changeHistoryList = new List<ChangeHistory>();
         Map<Id,Record> recordMap = new Map<Id,Record>();
-        V2MOM__c v2mom = [SELECT Id,Name,(SELECT Id,Name FROM Methods__r) FROM V2MOM__c WHERE Id=:v2momId WITH SECURITY_ENFORCED LIMIT 1];
+        V2MOM__c v2mom = [SELECT Id,Name,(SELECT Id,Name FROM Methods__r) FROM V2MOM__c WHERE Id=:v2momId WITH SYSTEM_MODE LIMIT 1];
         if(!v2mom.Methods__r.isEmpty()){
             for(Method__c m : v2mom.Methods__r){
                 recordMap.put(m.Id,new Record(m.Id,m.Name,'Method'));
             }
-            for(Measure__c m : [SELECT Id,Name FROM Measure__c WHERE Method__c IN:recordMap.keySet() WITH SECURITY_ENFORCED]){
+            for(Measure__c m : [SELECT Id,Name FROM Measure__c WHERE Method__c IN:recordMap.keySet() WITH SYSTEM_MODE]){
                 recordMap.put(m.Id,new Record(m.Id,m.Name,'Measure'));
             }
             //Add Obstacles Query 
         }
         recordMap.put(v2mom.Id, new Record(v2mom.Id,v2mom.Name,'V2MOM'));
-        List<FeedItem> feedItemList = [SELECT  Id, ParentId, CreatedDate, RelatedRecordId,Type,(SELECT Id,FieldName,OldValue,NewValue FROM FeedTrackedChanges) FROM FeedItem WHERE (Type='TrackedChange' OR Type='CreateRecordEvent') AND ParentId IN :recordMap.keySet() WITH SECURITY_ENFORCED LIMIT 50];
+        List<FeedItem> feedItemList = [SELECT  Id, ParentId, CreatedDate, RelatedRecordId,Type,(SELECT Id,FieldName,OldValue,NewValue FROM FeedTrackedChanges) FROM FeedItem WHERE (Type='TrackedChange' OR Type='CreateRecordEvent') AND ParentId IN :recordMap.keySet() WITH SYSTEM_MODE LIMIT 50];
         if(feedItemList != null && feedItemList.size() > 0){
         
             for(FeedItem fi: feedItemList){
@@ -142,7 +142,7 @@ public with sharing class V2MOM_RootComponentController {
     @AuraEnabled(cacheable=true)
     public static Boolean checkIsManager(String userId){
         
-        List<User> listUsers = [SELECT Id FROM User WHERE ManagerId=:userId WITH SECURITY_ENFORCED LIMIT 1];
+        List<User> listUsers = [SELECT Id FROM User WHERE ManagerId=:userId WITH SYSTEM_MODE LIMIT 1];
         
         if(!listUsers.isEmpty()){
             
@@ -153,12 +153,12 @@ public with sharing class V2MOM_RootComponentController {
     
     @AuraEnabled(cacheable=true) 
     public static Boolean getManagerEdit(String userId,String v2momId){
-        List<V2MOM__c> v2momList = [SELECT id, User__c from V2MOM__c where Id=:v2momId WITH SECURITY_ENFORCED LIMIT 1];
+        List<V2MOM__c> v2momList = [SELECT id, User__c from V2MOM__c where Id=:v2momId WITH SYSTEM_MODE LIMIT 1];
         
         if(v2momList != null){
             String v2momUserId = v2momList[0].User__c;
             if(v2momUserId != null){
-                List<User> listUsers = [SELECT Id FROM User WHERE ManagerId=:userId AND id=: v2momUserId WITH SECURITY_ENFORCED LIMIT 1];
+                List<User> listUsers = [SELECT Id FROM User WHERE ManagerId=:userId AND id=: v2momUserId WITH SYSTEM_MODE LIMIT 1];
                 if(!listUsers.isEmpty()){
                     return true;
                 } 
@@ -173,7 +173,7 @@ public with sharing class V2MOM_RootComponentController {
         
         List<Measure_Team_Member__c> teamMembers = new List<Measure_Team_Member__c>();
         String quarterField = quarter+'__c';
-        String query = 'SELECT Id,CreatedById,Measure__r.Name,Team_Member__c,'+''+quarter+'_Progress__c FROM Measure_Team_Member__c WHERE Team_Member__c =:userId AND Measure__r.Method__r.V2MOM__r.FY_Year__c =:fyyear AND '+quarterField+'=true AND CreatedById != :userId WITH SECURITY_ENFORCED ORDER BY CreatedDate Desc';
+        String query = 'SELECT Id,CreatedById,Measure__r.Name,Team_Member__c,'+''+quarter+'_Progress__c FROM Measure_Team_Member__c WHERE Team_Member__c =:userId AND Measure__r.Method__r.V2MOM__r.FY_Year__c =:fyyear AND '+quarterField+'=true AND CreatedById != :userId WITH SYSTEM_MODE ORDER BY CreatedDate Desc';
         teamMembers = Database.query(query);
         
         
@@ -183,9 +183,9 @@ public with sharing class V2MOM_RootComponentController {
     @AuraEnabled(cacheable=true)
     public static List<Measure__c> getRelatedMeasures(String methodId,String applicableQuarter){
         
-            String query = 'SELECT Id FROM Measure__c WHERE Method__c=:methodId AND '+''+applicableQuarter +'__c'+'=true WITH SECURITY_ENFORCED';
+            String query = 'SELECT Id FROM Measure__c WHERE Method__c=:methodId AND '+''+applicableQuarter +'__c'+'=true WITH SYSTEM_MODE';
         
-        //return [SELECT Id FROM Measure__c WHERE Method__c=:methodId WITH SECURITY_ENFORCED];
+        //return [SELECT Id FROM Measure__c WHERE Method__c=:methodId WITH SYSTEM_MODE];
         return Database.query(query);
     }
     
@@ -200,7 +200,7 @@ public with sharing class V2MOM_RootComponentController {
                      (SELECT Id FROM Obstacles__r) 
                      FROM V2MOM__c WHERE User__c=:userId 
                      AND FY_Year__c=:financialYear
-                     WITH SECURITY_ENFORCED 
+                     WITH SYSTEM_MODE 
                      LIMIT 1];
         if(v2momList.size()>0){
             return v2momList[0];
@@ -211,7 +211,7 @@ public with sharing class V2MOM_RootComponentController {
 
     @AuraEnabled(cacheable=true)
     public static integer getCurrentFY() {
-        Organization orgInfo = [SELECT FiscalYearStartMonth, UsesStartDateAsFiscalYearName FROM Organization WHERE id=:Userinfo.getOrganizationId() WITH SECURITY_ENFORCED];
+        Organization orgInfo = [SELECT FiscalYearStartMonth, UsesStartDateAsFiscalYearName FROM Organization WHERE id=:Userinfo.getOrganizationId() WITH SYSTEM_MODE];
         Date today = system.today();
         Integer currentFY;
         if (today.month() >= orgInfo.FiscalYearStartMonth) {
@@ -234,7 +234,7 @@ public with sharing class V2MOM_RootComponentController {
     public static String getCurrentQuarter() {
         Date currentDate = system.today();
 		String currentQuarter = 'Q1';
-        List<Period> periodList = [SELECT Id, Type, StartDate, EndDate,  Number FROM Period where type='Quarter' AND startDate <=: currentDate AND EndDate >=: currentDate WITH SECURITY_ENFORCED];
+        List<Period> periodList = [SELECT Id, Type, StartDate, EndDate,  Number FROM Period where type='Quarter' AND startDate <=: currentDate AND EndDate >=: currentDate WITH SYSTEM_MODE];
         if(periodList != null){
             currentQuarter = 'Q'+periodList[0].Number;
         }     
@@ -244,10 +244,10 @@ public with sharing class V2MOM_RootComponentController {
     //Can this be merged with getRelatedMeasures
     @AuraEnabled(cacheable=true)
     public static List<Measure__c> getMeasuresData(String methodId,String applicableQuarter ){
-        String query = 'SELECT Id,Name,Q1_Progress__c,Q2_Progress__c,Q3_Progress__c,Q4_Progress__c FROM Measure__c WHERE Method__c =:methodId AND '+''+applicableQuarter +'__c'+'=true WITH SECURITY_ENFORCED ORDER BY CreatedDate DESC';
-        //query = 'SELECT Id FROM Measure__c WHERE Method__c=:methodId AND '+''+applicableQuarter +'__c'+'=true WITH SECURITY_ENFORCED';
+        String query = 'SELECT Id,Name,Q1_Progress__c,Q2_Progress__c,Q3_Progress__c,Q4_Progress__c FROM Measure__c WHERE Method__c =:methodId AND '+''+applicableQuarter +'__c'+'=true WITH SYSTEM_MODE ORDER BY CreatedDate DESC';
+        //query = 'SELECT Id FROM Measure__c WHERE Method__c=:methodId AND '+''+applicableQuarter +'__c'+'=true WITH SYSTEM_MODE';
         return Database.query(query);
-        //return [SELECT Id,Name,Q1_Progress__c,Q2_Progress__c,Q3_Progress__c,Q4_Progress__c FROM Measure__c WHERE Method__c =:methodId WITH SECURITY_ENFORCED ORDER BY LastModifiedDate DESC];
+        //return [SELECT Id,Name,Q1_Progress__c,Q2_Progress__c,Q3_Progress__c,Q4_Progress__c FROM Measure__c WHERE Method__c =:methodId WITH SYSTEM_MODE ORDER BY LastModifiedDate DESC];
     }
 
     @AuraEnabled(cacheable=true)
@@ -256,7 +256,7 @@ public with sharing class V2MOM_RootComponentController {
             financialYear = String.valueOf(getCurrentFY());
         }
         List<V2MOM__c> v2momList = new List<V2MOM__c>();
-        v2momList = [SELECT Id, Values__c, Vision__c FROM V2MOM__c WHERE User__c=:userId AND FY_Year__c=:financialYear WITH SECURITY_ENFORCED LIMIT 1];
+        v2momList = [SELECT Id, Values__c, Vision__c FROM V2MOM__c WHERE User__c=:userId AND FY_Year__c=:financialYear WITH SYSTEM_MODE LIMIT 1];
         if(v2momList.size()>0){
             return v2momList[0];
         } else {
@@ -266,14 +266,14 @@ public with sharing class V2MOM_RootComponentController {
 
     @AuraEnabled(cacheable=true)
     public static List<User> getReportingUsers(){
-        return [Select Id, Name from user where ManagerId=:UserInfo.getUserId() WITH SECURITY_ENFORCED];
+        return [Select Id, Name from user where ManagerId=:UserInfo.getUserId() WITH SYSTEM_MODE];
     }
 
     @AuraEnabled(cacheable=true)
     public static List<CustomSelectOption> getAllV2MOMFY(String userId){
         String currentFinancialYear = String.valueOf(getCurrentFY());
         List<CustomSelectOption> selectOptions = new List<CustomSelectOption>{new CustomSelectOption(currentFinancialYear)};
-            for(V2MOM__c v2mom:[SELECT Id,FY_Year__c FROM V2MOM__c WHERE User__c=:userId WITH SECURITY_ENFORCED ORDER BY CreatedDate]){
+            for(V2MOM__c v2mom:[SELECT Id,FY_Year__c FROM V2MOM__c WHERE User__c=:userId WITH SYSTEM_MODE ORDER BY CreatedDate]){
                 if(String.isNotBlank(v2mom.FY_Year__c) && !v2mom.FY_Year__c.equals(currentFinancialYear)){
                     selectOptions.add(new CustomSelectOption(v2mom.FY_Year__c));
                 }
@@ -288,7 +288,7 @@ public with sharing class V2MOM_RootComponentController {
         String query = 'SELECT Id, Name, Status__c, Published_Date__c, FY_Year__c,';
         query += '(SELECT Id, Name, Order__c, '+quarter+' FROM Methods__r WHERE '+quarter +'=true ORDER BY CreatedDate DESC),';
         query += '(SELECT Id FROM Obstacles__r)';
-        query += ' FROM V2MOM__c WHERE Id=:v2momId WITH SECURITY_ENFORCED';
+        query += ' FROM V2MOM__c WHERE Id=:v2momId WITH SYSTEM_MODE';
         List<V2MOM__c> v2momList = new List<V2MOM__c>();
         
         
@@ -303,9 +303,9 @@ public with sharing class V2MOM_RootComponentController {
 
     @AuraEnabled(cacheable=true)
     public static List<V2MOM__c> getReporteeDetails(Id managerId, string year){
-        List<User> lstUsers=  [SELECT Id from User where ManagerId=:managerId WITH SECURITY_ENFORCED];
+        List<User> lstUsers=  [SELECT Id from User where ManagerId=:managerId WITH SYSTEM_MODE];
         List<V2MOM__c> lstV2MoM = new List<V2MOM__c>();
-        lstV2MoM = [SELECT Id, User__r.Name, User__r.Title,LastModifiedDate,Q1_Progress__c,Q2_Progress__c,Q3_Progress__c,Q4_Progress__c FROM V2MOM__c WHERE User__c IN :lstUsers AND FY_Year__c=:year WITH SECURITY_ENFORCED];  
+        lstV2MoM = [SELECT Id, User__r.Name, User__r.Title,LastModifiedDate,Q1_Progress__c,Q2_Progress__c,Q3_Progress__c,Q4_Progress__c FROM V2MOM__c WHERE User__c IN :lstUsers AND FY_Year__c=:year WITH SYSTEM_MODE];  
         return lstV2MoM;
     }
 
@@ -323,7 +323,7 @@ public with sharing class V2MOM_RootComponentController {
     @AuraEnabled(cacheable=true)
     public static List<String> getAllV2MOMData(String userId){
         List<String> v2momFYList = new List<String>();
-        List<V2MOM__c> v2momList = [SELECT Id, Name, Status__c, Published_Date__c, FY_Year__c FROM V2MOM__c WHERE User__c=:userId WITH SECURITY_ENFORCED ORDER BY CreatedDate DESC];
+        List<V2MOM__c> v2momList = [SELECT Id, Name, Status__c, Published_Date__c, FY_Year__c FROM V2MOM__c WHERE User__c=:userId WITH SYSTEM_MODE ORDER BY CreatedDate DESC];
         for(V2MOM__c fy:v2momList)
             v2momFYList.add(fy.FY_Year__c);
         if(v2momFYList.size()>0){

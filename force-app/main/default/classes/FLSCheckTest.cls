@@ -4,13 +4,13 @@ public class FLSCheckTest {
         
         List<String> fieldNames = new List<String>{'Name'};
         Test.startTest();
-        boolean isAccessibleFields = FLSCheck.isAccessible(fieldNames, 'V2MOMQ__V2MOM__c');
+        boolean isAccessibleFields = FLSCheck.isAccessible(fieldNames, 'V2MOM__c');
         Test.stopTest();
     }
     @isTest static void isUpdateableTest(){
         List<String> fieldNames = new List<String>{'Name'};
         Test.startTest();
-        boolean isUpdateableFields = FLSCheck.isUpdateable(fieldNames, 'V2MOMQ__V2MOM__c');
+        boolean isUpdateableFields = FLSCheck.isUpdateable(fieldNames, 'V2MOM__c');
         Test.stopTest();
     }
     @isTest static void isCreateableTest(){

@@ -24,12 +24,12 @@ public class V2MOMQ_TestClass {
         system.assertNotEquals(reportee.Id, null);
         
         System.runAs(reportee) {
-            V2MOMQ__V2MOM__c v2MOMRec = V2MOMQ_TestUtil.createV2MOM();
+            V2MOM__c v2MOMRec = V2MOMQ_TestUtil.createV2MOM();
             String v2momId = v2MOMRec.Id;
-            V2MOMQ__Method__c methodRec  = V2MOMQ_TestUtil.createMethod(v2momId);
-            V2MOMQ__Obstacle__c obstacleRec = V2MOMQ_TestUtil.createObstacle(v2momId);
-            V2MOMQ__Measure__c measureRec = V2MOMQ_TestUtil.createMeasure(methodRec.Id);
-            V2MOMQ__Measure__c assigendMeasureRec = V2MOMQ_TestUtil.createMeasure(methodRec.Id);
+            Method__c methodRec  = V2MOMQ_TestUtil.createMethod(v2momId);
+            Obstacle__c obstacleRec = V2MOMQ_TestUtil.createObstacle(v2momId);
+            Measure__c measureRec = V2MOMQ_TestUtil.createMeasure(methodRec.Id);
+            Measure__c assigendMeasureRec = V2MOMQ_TestUtil.createMeasure(methodRec.Id);
             
             Integer currentFY = V2MOM_RootComponentController.getCurrentFY();
             String dateValue = ''+Date.today().year();
@@ -47,13 +47,13 @@ public class V2MOMQ_TestClass {
             
         }
         System.runAs(manager) {
-            V2MOMQ__V2MOM__c v2MOMRec = V2MOMQ_TestUtil.createV2MOM();
+            V2MOM__c v2MOMRec = V2MOMQ_TestUtil.createV2MOM();
             String v2momId = v2MOMRec.Id;
-            V2MOMQ__Method__c methodRec  = V2MOMQ_TestUtil.createMethod(v2momId);
-            V2MOMQ__Obstacle__c obstacleRec = V2MOMQ_TestUtil.createObstacle(v2momId);
-            V2MOMQ__Measure__c measureRec = V2MOMQ_TestUtil.createMeasure(methodRec.Id);
+            Method__c methodRec  = V2MOMQ_TestUtil.createMethod(v2momId);
+            Obstacle__c obstacleRec = V2MOMQ_TestUtil.createObstacle(v2momId);
+            Measure__c measureRec = V2MOMQ_TestUtil.createMeasure(methodRec.Id);
             
-            V2MOMQ__Measure_Team_Member__c assignedMeasure = V2MOMQ_TestUtil.createAssignedMeasure(measureRec.Id);
+            Measure_Team_Member__c assignedMeasure = V2MOMQ_TestUtil.createAssignedMeasure(measureRec.Id);
             
             Integer currentFY = V2MOM_RootComponentController.getCurrentFY();
             
@@ -87,8 +87,8 @@ public class V2MOMQ_TestClass {
          
         Test.startTest();
         System.runAs(reportee) {                
-            V2MOMQ__V2MOM__c v2MOM = V2MOMQ_TestUtil.createV2MOM();
-            v2MOM.V2MOMQ__User__c = reportee.Id;
+            V2MOM__c v2MOM = V2MOMQ_TestUtil.createV2MOM();
+            v2MOM.User__c = reportee.Id;
             update v2MOM;
              Boolean val = V2MOM_RootComponentController.getManagerEdit(reportee.Id,v2MOM.Id);
         }
@@ -136,10 +136,10 @@ public class V2MOMQ_TestClass {
         
         Test.startTest();
         System.runAs(reportee) {
-            V2MOMQ__V2MOM__c v2MOMRec = V2MOMQ_TestUtil.createV2MOM();
+            V2MOM__c v2MOMRec = V2MOMQ_TestUtil.createV2MOM();
             String v2momId = v2MOMRec.Id;
-            V2MOMQ__Method__c methodRec  = V2MOMQ_TestUtil.createMethod(v2momId);
-            V2MOMQ__Measure__c assigendMeasureRec = V2MOMQ_TestUtil.createMeasure(methodRec.Id);
+            Method__c methodRec  = V2MOMQ_TestUtil.createMethod(v2momId);
+            Measure__c assigendMeasureRec = V2MOMQ_TestUtil.createMeasure(methodRec.Id);
             Integer currentFY = V2MOM_RootComponentController.getCurrentFY();
             String dateValue = ''+Date.today().year();
             
@@ -170,16 +170,16 @@ public class V2MOMQ_TestClass {
         system.assertNotEquals(reportee.Id, null);
         Test.startTest();
         System.runAs(reportee) {
-            V2MOMQ__V2MOM__c v2MOMRec = V2MOMQ_TestUtil.createV2MOM();
+            V2MOM__c v2MOMRec = V2MOMQ_TestUtil.createV2MOM();
             String v2momId = v2MOMRec.Id;
-            V2MOMQ__Method__c methodRec  = V2MOMQ_TestUtil.createMethod(v2momId);
+            Method__c methodRec  = V2MOMQ_TestUtil.createMethod(v2momId);
             
-            V2MOMQ__Measure__c assigendMeasureRec = V2MOMQ_TestUtil.createMeasure(methodRec.Id);
+            Measure__c assigendMeasureRec = V2MOMQ_TestUtil.createMeasure(methodRec.Id);
             
             Integer currentFY = V2MOM_RootComponentController.getCurrentFY();
             
             String dateValue = ''+Date.today().year();
-            methodRec.V2MOMQ__Description__c = 'New Description';
+            methodRec.Description__c = 'New Description';
             update methodRec;
             FeedItem feed = new FeedItem (
                 ParentId = v2momId,
