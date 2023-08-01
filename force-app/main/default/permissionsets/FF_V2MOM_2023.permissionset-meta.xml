@@ -614,4 +614,12 @@
         <object>V2MOM__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <tabSettings>
+        <tab>MY_V2MOM</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>V2MOM__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
 </PermissionSet>
