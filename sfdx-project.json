@@ -1,12 +1,19 @@
 {
-  "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "FFmyV2MOM",
+            "versionName": "FY2024-1",
+            "versionNumber": "0.0.1.NEXT"
+        }
+    ],
+    "name": "FFmyV2MOM",
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "55.0",
+    "packageAliases": {
+        "FFmyV2MOM": "0Ho4J000000TNnrSAG",
+        "FFmyV2MOM@0.0.1-1": "04t4J000002DnW4QAK"
     }
-  ],
-  "name": "myV2MOM",
-  "namespace": "",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "55.0"
 }
