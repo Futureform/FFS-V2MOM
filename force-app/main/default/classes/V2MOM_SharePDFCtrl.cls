@@ -25,13 +25,13 @@ public class V2MOM_SharePDFCtrl {
                                        Q3_Type__c, Q3_Status__c,
                                        Q4_Type__c, Q4_Status__c
                                        from Measures__r) 
-                                      from Method__c where V2MOM__c =: v2momObj.Id WITH SECURITY_ENFORCED];
+                                      from Method__c where V2MOM__c =: v2momObj.Id];
 
-		return methodsList;
+        return methodsList;
     }
     
     public List<Obstacle__c> fetchObstacles(){
-        obsList = [select id, Name, Description__c from Obstacle__c where V2MOM__c =: v2momObj.Id WITH SECURITY_ENFORCED];
+        obsList = [select id, Name, Description__c from Obstacle__c where V2MOM__c =: v2momObj.Id];
         return obsList;
     }
     
